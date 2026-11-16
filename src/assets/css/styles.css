@@ -162,16 +162,18 @@ a:focus-visible,
 }
 
 @media (max-width: 520px) {
-  /* Scale the entire 520px design proportionally, as requested in Figma.
-     At 390px, 1rem = 12px and 18px body/menu text becomes 13.5px.
-     No transform/zoom: document flow, scrolling and focus stay native. */
-  html { font-size: calc(100vw * 16 / 520); }
   .site-layout__sidebar { padding: var(--space-16) var(--space-16) 0; }
   .site-nav__list { flex-direction: column; align-items: end; gap: 0.0625rem; }
   .site-layout__content { padding: 7.5rem var(--space-16) var(--space-60); }
   /* The 520px Cases/Education frames have a centered 483px content wrapper. */
   .case-list, .education { margin-inline: 0.15625rem; }
   .education { padding-right: var(--space-20); }
+}
+
+@media (max-width: 460px) {
+  /* Keep the mobile layout at its base size through 460px, then scale it.
+     Rem units preserve document flow, scrolling and keyboard focus. */
+  html { font-size: calc(100vw * 16 / 460); }
 }
 
 @supports not (text-box-trim: trim-both) {
