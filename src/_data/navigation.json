@@ -1,0 +1,5 @@
+[
+  { "key": "cases", "label": "Cases", "url": "/cases/" },
+  { "key": "resume", "label": "Résumé", "url": "/resume/" },
+  { "key": "education", "label": "Education", "url": "/education/" }
+]

@@ -1,0 +1,79 @@
+[
+  {
+    "title": "Senior Product Designer, JVO",
+    "dates": "Dec 2024 – Sep 2026",
+    "description": "JVO is a B2B SaaS platform for marketplace sellers, combining data analytics, AI-powered automation, SEO, pricing, and logistics tools. In 2024, JVO customers generated 15% of Wildberries’ revenue.",
+    "groups": [
+      {
+        "heading": "Role & Ownership",
+        "items": [
+          "Led end-to-end product design, from problem framing and discovery through solution design, delivery, and post-release analysis.",
+          "Led 0-to-1 initiatives and major redesigns across analytics, logistics, monetization, and self-service experiences"
+        ]
+      },
+      {
+        "heading": "Areas of Work",
+        "items": [
+          "Designed data-heavy decision-making tools helping sellers identify growth opportunities and potential losses and prioritize actions based on their financial impact.",
+          "Co-designed an AI-powered e-commerce agent that automates marketplace operations — from pricing and promotions to customer reviews and product questions through direct marketplace integration, reducing repetitive work across large product assortments while keeping sellers in control of automation rules.",
+          "Designed shipment planning tools helping sellers choose more favorable supply dates based on marketplace coefficients and select warehouses for faster delivery across target regions.",
+          "Redesigned onboarding and payment flows to enable self-service registration, product trial, and subscription payments — reducing user friction and dependency on account managers.",
+          "Improved monetization and retention by simplifying how customers add new SKUs to the paid SEO module and designing monthly performance reports that make JVO’s value more visible to customers."
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Senior User Interface Designer, TASS",
+    "dates": "Nov 2016 – Dec 2024",
+    "description": "TASS is one of Russia’s largest news agencies. Its editorial teams publish more than 3,000 news items across over 70 news feeds every day.",
+    "groups": [
+      {
+        "heading": "Role & Ownership",
+        "items": [
+          "Led end-to-end design of internal editorial tools, from understanding newsroom workflows and identifying problems to designing solutions and supporting implementation.",
+          "Led a 0-to-1 design system architecture, defining foundations, interaction patterns, and component structure through to a production-ready React library.",
+          "Designed new products and evolved legacy interfaces used in complex, interconnected editorial workflows.",
+          "Worked directly with editors and other internal users to understand their processes, constraints, and needs."
+        ]
+      },
+      {
+        "heading": "Areas of Work",
+        "items": [
+          "Designed interfaces for creating, editing, managing, and publishing news content, helping editors work faster and reducing friction in everyday editorial workflows.",
+          "Improved workflows connecting different editorial departments, helping teams coordinate their work and move content through the publishing process more efficiently.",
+          "Redesigned legacy internal systems and introduced new interaction patterns while accounting for established workflows and the needs of experienced professional users."
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Designer, Art. Lebedev Studio",
+    "dates": "Apr 2016 – Jun 2016",
+    "description": "Art. Lebedev Studio is one of Russia’s largest and most recognized multidisciplinary design studios, working across digital products, interfaces, branding, industrial design, and urban environments.",
+    "groups": [
+      {
+        "heading": "Areas of Work",
+        "items": [
+          "Designed interfaces and interaction scenarios for Stoloto online lottery games, covering core gameplay, betting flows, game states, and results.",
+          "Developed new UX and visual concepts for the gaming platform, combining transactional lottery mechanics with more engaging game-like experiences."
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Designer, Cetis Branding Agency",
+    "dates": "May 2011 – Apr 2016",
+    "description": "",
+    "groups": [
+      {
+        "heading": "Areas of Work",
+        "items": [
+          "Designed visual identities and brand materials across print and digital media.",
+          "Designed websites from concept and visual direction through layouts and production-ready assets.",
+          "Created motion graphics and animated content for digital projects and presentations."
+        ]
+      }
+    ]
+  }
+]

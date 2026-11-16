@@ -1,0 +1,21 @@
+---
+layout: layout.njk
+title: Education
+pageKey: education
+description: Education and professional training of Smaznov.
+permalink: /education/index.html
+---
+<div class="education">
+  {% for school in education %}
+    <article class="education__item" aria-labelledby="school-{{ loop.index }}">
+      <div class="education__logo-slot">
+        <img class="education__logo" src="/assets/images/{{ school.logo }}.svg" width="44" height="44" alt="">
+      </div>
+      <div class="education__details">
+        <h2 class="entry-heading__title" id="school-{{ loop.index }}">{{ school.name }}</h2>
+        <p class="education__specialisation">{{ school.specialisation }}</p>
+        <p class="entry-heading__date">{{ school.dates }}</p>
+      </div>
+    </article>
+  {% endfor %}
+</div>

@@ -1,0 +1,19 @@
+---
+layout: layout.njk
+title: Cases
+pageKey: cases
+description: Product design cases by Smaznov.
+permalink: /cases/index.html
+---
+<div class="case-list">
+  {% for case in cases %}
+    <article class="case-card" aria-labelledby="case-{{ loop.index }}">
+      <header class="entry-heading">
+        <h2 class="entry-heading__title" id="case-{{ loop.index }}">{{ case.title }}</h2>
+        <p class="entry-heading__date">{{ case.dates }}</p>
+      </header>
+      <img class="case-card__image" src="/assets/images/{{ case.image }}" width="660" height="422" alt="{% if case.isPlaceholder %}Case preview placeholder{% endif %}"{% if not loop.first %} loading="lazy"{% endif %}>
+      <p class="case-card__description">{{ case.description }}</p>
+    </article>
+  {% endfor %}
+</div>

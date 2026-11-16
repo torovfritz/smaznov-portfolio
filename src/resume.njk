@@ -1,0 +1,27 @@
+---
+layout: layout.njk
+title: Résumé
+pageKey: resume
+description: Product and interface design experience of Smaznov.
+permalink: /resume/index.html
+---
+<div class="resume">
+  {% for job in resume %}
+    <article class="resume__job" aria-labelledby="job-{{ loop.index }}">
+      <header class="entry-heading">
+        <h2 class="entry-heading__title" id="job-{{ loop.index }}">{{ job.title }}</h2>
+        <p class="entry-heading__date">{{ job.dates }}</p>
+      </header>
+      {% if job.description %}<p class="resume__description">{{ job.description }}</p>{% endif %}
+      {% set jobIndex = loop.index %}
+      {% for group in job.groups %}
+        <section class="resume__section" aria-labelledby="job-{{ jobIndex }}-section-{{ loop.index }}">
+          <h3 class="resume__subheading" id="job-{{ jobIndex }}-section-{{ loop.index }}">{{ group.heading }}</h3>
+          <ul class="resume__list" role="list">
+            {% for item in group.items %}<li class="resume__item">{{ item }}</li>{% endfor %}
+          </ul>
+        </section>
+      {% endfor %}
+    </article>
+  {% endfor %}
+</div>
