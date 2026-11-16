@@ -17,18 +17,20 @@ if (menu && title) {
   function update() {
     frame = 0;
     const visible = narrowScreen.matches && title.getBoundingClientRect().bottom <= 0;
-    clearTimeout(expansionTimer);
 
     if (visible) {
+      const wasVisible = menu.classList.contains('scroll-menu--visible');
       menu.hidden = false;
       updateWidth();
       menu.classList.add('scroll-menu--visible');
       if (reducedMotion.matches) {
+        clearTimeout(expansionTimer);
         menu.classList.add('scroll-menu--expanded');
-      } else if (!menu.classList.contains('scroll-menu--expanded')) {
+      } else if (!wasVisible) {
         expansionTimer = setTimeout(() => menu.classList.add('scroll-menu--expanded'), 130);
       }
     } else {
+      clearTimeout(expansionTimer);
       menu.classList.remove('scroll-menu--expanded', 'scroll-menu--visible');
       menu.hidden = true;
     }
@@ -44,6 +46,7 @@ if (menu && title) {
   window.addEventListener('scroll', scheduleUpdate, { passive: true });
   window.addEventListener('resize', scheduleUpdate);
   narrowScreen.addEventListener('change', scheduleUpdate);
+  reducedMotion.addEventListener('change', scheduleUpdate);
   document.fonts.ready.then(scheduleUpdate);
   update();
 }
