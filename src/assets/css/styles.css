@@ -1,0 +1,186 @@
+@font-face {
+  font-family: "DM Sans";
+  src: url("../fonts/dm-sans-variable.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 100 1000;
+  font-display: swap;
+}
+
+* { box-sizing: border-box; }
+
+html { font-size: 100%; }
+
+body {
+  margin: 0;
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-family);
+  font-size: var(--text-size);
+  font-weight: var(--font-medium);
+  line-height: var(--text-line);
+  font-optical-sizing: none;
+  font-variation-settings: "opsz" 14;
+}
+
+h1, h2, h3, p, ul { margin: 0; }
+ul { padding: 0; }
+a { color: inherit; }
+img { display: block; }
+
+a:focus-visible,
+[tabindex="-1"]:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 4px;
+}
+
+.skip-link {
+  position: fixed;
+  top: 0;
+  left: var(--space-16);
+  z-index: 2;
+  padding: var(--space-12) var(--space-16);
+  background: var(--color-background);
+  transform: translateY(-150%);
+}
+.skip-link:focus { transform: translateY(0); }
+
+.site-layout {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+  min-height: 100svh;
+}
+
+.site-layout__sidebar {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  min-height: 100svh;
+  padding: var(--space-20) var(--space-24) var(--space-30);
+}
+
+.site-header {
+  display: grid;
+  grid-template-areas: "brand" "intro" "nav";
+  grid-template-rows: auto auto 1fr;
+  row-gap: var(--space-40);
+}
+
+.site-brand {
+  grid-area: brand;
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  width: fit-content;
+  padding-left: 0.375rem;
+  text-decoration: none;
+}
+.site-brand__portrait { width: 4.4375rem; height: 4.4375rem; }
+.site-brand__name {
+  font-size: var(--heading-size);
+  font-weight: var(--font-bold);
+  line-height: var(--heading-line);
+  letter-spacing: var(--tracking-heading);
+}
+
+.site-header__intro {
+  grid-area: intro;
+  display: grid;
+  gap: var(--space-40);
+  min-width: 0;
+}
+.site-header__title {
+  font-size: var(--display-size);
+  font-weight: var(--font-bold);
+  line-height: var(--display-line);
+  letter-spacing: var(--tracking-display);
+  /* Figma trims H1 to cap height (70px desktop, 53px mobile). */
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
+}
+.site-header__tagline { padding-left: 0.375rem; }
+
+.site-nav { grid-area: nav; align-self: end; padding-left: 0.375rem; }
+.site-nav__list { display: flex; flex-direction: column; gap: 0.375rem; list-style: none; }
+.site-nav__link {
+  display: block;
+  width: fit-content;
+  font-weight: var(--font-bold);
+  letter-spacing: var(--tracking-label);
+  text-decoration: none;
+}
+.site-nav__link--current { color: var(--color-current-link); }
+.site-nav__link:hover { text-decoration: underline; text-underline-offset: 0.2em; }
+.site-nav__link:active { color: var(--color-text); }
+
+.site-layout__content { min-width: 0; padding: 11.3125rem var(--space-80) var(--space-80) 0; }
+.site-layout__content-inner { max-width: var(--content-width); }
+
+.entry-heading { display: grid; gap: var(--space-8); }
+.entry-heading__title {
+  font-size: var(--heading-size);
+  font-weight: var(--font-bold);
+  line-height: var(--heading-line);
+  letter-spacing: var(--tracking-heading);
+}
+.entry-heading__date {
+  color: var(--color-text-secondary);
+  font-size: var(--heading-size);
+  line-height: var(--heading-line);
+  letter-spacing: var(--tracking-heading);
+}
+
+.case-list { display: grid; gap: var(--space-40); }
+.case-card { display: grid; gap: var(--space-20); }
+.case-card__image { width: 100%; height: auto; aspect-ratio: 660 / 422; }
+
+.resume { display: grid; gap: var(--space-60); }
+.resume__job { display: grid; gap: var(--space-20); }
+.resume__section, .resume__list { display: grid; gap: var(--space-12); }
+.resume__subheading {
+  font-size: var(--text-size);
+  font-weight: var(--font-bold);
+  line-height: var(--text-line);
+  letter-spacing: var(--tracking-label);
+}
+.resume__list { list-style: none; }
+.resume__item { position: relative; padding-left: 1.6875rem; }
+.resume__item::before { content: "—"; position: absolute; left: 0; }
+
+.education { display: grid; gap: var(--space-40); }
+.education__item { display: grid; grid-template-columns: 3.5rem minmax(0, 1fr); gap: var(--space-16); }
+.education__logo-slot { position: relative; min-height: 3.5rem; }
+.education__logo { position: absolute; top: -0.625rem; left: 0.375rem; width: 2.75rem; height: 2.75rem; }
+.education__details { display: grid; align-content: start; gap: var(--space-8); }
+
+@media (max-width: 1080px) {
+  .site-layout { grid-template-columns: minmax(0, 1fr); align-content: start; }
+  .site-layout__sidebar { position: static; min-height: 0; padding: var(--space-20) var(--space-40) 0 var(--space-24); }
+  .site-header { grid-template-areas: "brand nav" "intro intro"; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto auto; }
+  .site-nav { align-self: center; justify-self: end; padding: 0; }
+  .site-nav__list { flex-direction: row; gap: var(--space-12); }
+  .site-layout__content { padding: 10rem var(--space-30) var(--space-80); }
+}
+
+@media (max-width: 520px) {
+  /* Scale the entire 520px design proportionally, as requested in Figma.
+     At 390px, 1rem = 12px and 18px body/menu text becomes 13.5px.
+     No transform/zoom: document flow, scrolling and focus stay native. */
+  html { font-size: calc(100vw * 16 / 520); }
+  .site-layout__sidebar { padding: var(--space-16) var(--space-16) 0; }
+  .site-nav__list { flex-direction: column; align-items: end; gap: 0.0625rem; }
+  .site-layout__content { padding: 7.5rem var(--space-16) var(--space-60); }
+  /* The 520px Cases/Education frames have a centered 483px content wrapper. */
+  .case-list, .education { margin-inline: 0.15625rem; }
+  .education { padding-right: var(--space-20); }
+}
+
+@supports not (text-box-trim: trim-both) {
+  .site-header__title { margin-block: -0.08em; }
+}
+
+@media print {
+  .site-layout { display: block; }
+  .site-layout__sidebar { position: static; min-height: 0; }
+  .site-nav, .skip-link { display: none; }
+  .site-layout__content { padding: var(--space-40) var(--space-24); }
+}
