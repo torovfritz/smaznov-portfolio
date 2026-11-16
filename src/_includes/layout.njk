@@ -29,5 +29,12 @@
         </div>
       </main>
     </div>
+    <div class="scroll-menu" data-scroll-menu hidden>
+      <button class="scroll-menu__button" type="button" aria-label="Scroll to top" data-scroll-menu-button>
+        <span class="scroll-menu__portrait"><img src="/assets/images/portrait.png" alt="" width="28" height="28"></span>
+        <span class="scroll-menu__label" data-scroll-menu-label>{% if pageKey == 'main' %}Smaznov.{% else %}{{ title }}{% endif %}</span>
+      </button>
+    </div>
+    <script src="/assets/js/scroll-menu.js" defer></script>
   </body>
 </html>
