@@ -1,0 +1,17 @@
+{
+  "name": "smaznov-portfolio",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Smaznov portfolio — static HTML built with Eleventy and Nunjucks",
+  "type": "module",
+  "scripts": {
+    "dev": "eleventy --serve",
+    "build": "eleventy"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.8"
+  }
+}
