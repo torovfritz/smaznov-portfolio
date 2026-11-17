@@ -29,16 +29,15 @@ img { display: block; }
 
 .has-js #main-content img { opacity: 0; transition: opacity 0.25s ease; }
 .has-js #main-content img.image-reveal--ready { opacity: 1; }
-.has-js .portrait__image { opacity: 0; transform: scale(0.65); transform-origin: center; filter: blur(var(--portrait-start-blur)); }
+.has-js .portrait__image { opacity: 0; transform: scale(0.65); transform-origin: center; }
 .has-js .portrait__image.image-reveal--ready {
   opacity: 1;
   transform: scale(0.95);
-  filter: blur(0);
   animation: portrait-emerge var(--portrait-reveal-duration) var(--portrait-reveal-ease) both;
 }
 @keyframes portrait-emerge {
-  from { opacity: 0; transform: scale(0.65); filter: blur(var(--portrait-start-blur)); }
-  to { opacity: 1; transform: scale(0.95); filter: blur(0); }
+  from { opacity: 0; transform: scale(0.65); }
+  to { opacity: 1; transform: scale(0.95); }
 }
 .page-enter-pending [data-page-transition] { opacity: 0; }
 
@@ -57,7 +56,7 @@ img { display: block; }
   0%, 100% { filter: brightness(1); }
   50% { filter: brightness(0.94); }
 }
-.portrait { --portrait-reveal-duration: 1s; --portrait-reveal-ease: cubic-bezier(0.4, 0, 0.2, 1); --portrait-start-blur: 0.08rem; position: relative; display: block; flex: none; overflow: hidden; border-radius: 50%; background-color: var(--color-black); }
+.portrait { --portrait-reveal-duration: 1s; --portrait-reveal-ease: cubic-bezier(0.4, 0, 0.2, 1); position: relative; display: block; flex: none; overflow: hidden; border-radius: 50%; background-color: var(--color-black); }
 .portrait__image { position: relative; width: 100%; height: 100%; object-fit: cover; }
 
 a:focus-visible,
@@ -207,7 +206,6 @@ a:focus-visible,
   }
 
   .scroll-menu__portrait {
-    --portrait-start-blur: 0.125rem;
     width: 1.75rem;
     height: 1.75rem;
     flex: none;
