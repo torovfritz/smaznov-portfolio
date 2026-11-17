@@ -1,4 +1,5 @@
 import { build } from "esbuild";
+import { HtmlBasePlugin } from "@11ty/eleventy";
 import { readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 
@@ -6,6 +7,7 @@ const entryPoint = fileURLToPath(new URL("./src/assets/js/site.js", import.meta.
 const bundlePath = fileURLToPath(new URL("./src/assets/js/site.bundle.js", import.meta.url));
 
 export default function (eleventyConfig) {
+  eleventyConfig.addPlugin(HtmlBasePlugin);
   eleventyConfig.on("eleventy.before", async () => {
     const result = await build({
       entryPoints: [entryPoint],

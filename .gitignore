@@ -4,5 +4,6 @@ _site/
 .env.*
 .DS_Store
 .cache/
+.mirror/
 qa/
 src/assets/js/site.bundle.js
