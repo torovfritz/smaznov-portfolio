@@ -35,6 +35,8 @@ img { display: block; }
 
 .image-placeholder { background-color: var(--color-whitesmoke); transition: background-color 0.25s ease; }
 .image-placeholder--ready { background-color: transparent; }
+.resume__logo.image-placeholder,
+.education__logo.image-placeholder { border-radius: 1rem; }
 .has-js .image-placeholder { background-color: transparent; }
 .has-js .image-placeholder:not(.image-placeholder--ready) {
   animation: show-image-placeholder 120ms ease-out 400ms both;
