@@ -9,7 +9,7 @@ permalink: /education/index.html
   <div class="education__list">
     {% for school in education %}
       <article class="education__item" aria-labelledby="school-{{ loop.index }}">
-        <img class="education__logo" src="/assets/images/education/{{ school.logo }}.svg" width="56" height="56" alt="">
+        <span class="education__logo image-placeholder"><img class="education__logo-image" src="/assets/images/education/{{ school.logo }}.svg" width="56" height="56" alt=""></span>
         <div class="education__details">
           <h2 class="entry-heading__title" id="school-{{ loop.index }}">{{ school.name }}</h2>
           <p class="education__specialisation">{{ school.specialisation }}</p>
