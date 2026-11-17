@@ -6,16 +6,22 @@ description: Education and professional training of Smaznov.
 permalink: /education/index.html
 ---
 <div class="education">
-  {% for school in education %}
-    <article class="education__item" aria-labelledby="school-{{ loop.index }}">
-      <div class="education__logo-slot">
-        <img class="education__logo" src="/assets/images/{{ school.logo }}.svg" width="44" height="44" alt="">
-      </div>
-      <div class="education__details">
-        <h2 class="entry-heading__title" id="school-{{ loop.index }}">{{ school.name }}</h2>
-        <p class="education__specialisation">{{ school.specialisation }}</p>
-        <p class="entry-heading__date">{{ school.dates }}</p>
-      </div>
-    </article>
-  {% endfor %}
+  <div class="education__list">
+    {% for school in education %}
+      <article class="education__item" aria-labelledby="school-{{ loop.index }}">
+        <img class="education__logo" src="/assets/images/education/{{ school.logo }}.svg" width="56" height="56" alt="">
+        <div class="education__details">
+          <h2 class="entry-heading__title" id="school-{{ loop.index }}">{{ school.name }}</h2>
+          <p class="education__specialisation">{{ school.specialisation }}</p>
+          <p class="entry-heading__date">{{ school.dates }}</p>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+  <figure class="education__collage" aria-label="Certificates and university emblem">
+    <img class="education__collage-image education__collage-image--cover" src="/assets/images/education/practicum-cover.png" width="406" height="287" alt="Yandex Practicum course cover">
+    <img class="education__collage-image education__collage-image--practicum" src="/assets/images/education/practicum-certificate.png" width="406" height="287" alt="Yandex Practicum certificate">
+    <img class="education__collage-image education__collage-image--bureau" src="/assets/images/education/bureau-certificate.png" width="208" height="287" alt="Bureau Gorbunov typography certificate">
+    <img class="education__collage-image education__collage-image--university" src="/assets/images/education/university-seal.png" width="292" height="287" alt="University emblem">
+  </figure>
 </div>

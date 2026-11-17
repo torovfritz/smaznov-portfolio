@@ -2,25 +2,25 @@
   {
     "name": "Yandex Practicum",
     "specialisation": "Frontend Development",
-    "dates": "May 2026 — Present",
-    "logo": "practicum"
+    "dates": "May 2026–Present",
+    "logo": "practicum-logo"
   },
   {
     "name": "Bureau Gorbunov",
     "specialisation": "Typography and Layout",
     "dates": "Aug 2024",
-    "logo": "bureau"
+    "logo": "bureau-logo"
   },
   {
     "name": "Yandex Practicum",
     "specialisation": "Product Design",
-    "dates": "Jun 2023 – Oct 2023",
-    "logo": "practicum"
+    "dates": "Jun 2023–Oct 2023",
+    "logo": "practicum-logo"
   },
   {
     "name": "Moscow State University of Instrument Engineering and Computer Science",
     "specialisation": "Engineering, design and technology of electronic circuits.",
-    "dates": "2003 – 2008",
-    "logo": "msuiecs"
+    "dates": "2003–2008",
+    "logo": "university-logo"
   }
 ]

@@ -241,11 +241,27 @@ a:focus-visible,
 .resume__item { position: relative; padding-left: 1.6875rem; }
 .resume__item::before { content: "—"; position: absolute; left: 0; }
 
-.education { display: grid; gap: var(--space-40); }
+.site-layout__content[data-page-key="education"] .site-layout__content-inner { max-width: 87.75rem; }
+.education { display: grid; gap: 4.625rem; }
+.education__list { display: grid; gap: var(--space-40); max-width: 41.25rem; }
 .education__item { display: grid; grid-template-columns: 3.5rem minmax(0, 1fr); gap: var(--space-16); }
-.education__logo-slot { position: relative; min-height: 3.5rem; }
-.education__logo { position: absolute; top: -0.625rem; left: 0.375rem; width: 2.75rem; height: 2.75rem; }
+.education__logo { width: 3.5rem; height: 3.5rem; }
 .education__details { display: grid; align-content: start; gap: var(--space-8); }
+.education__collage { position: relative; width: min(100%, 28.8125rem); aspect-ratio: 461 / 737; margin: 0; }
+.education__collage-image { position: absolute; display: block; height: auto; }
+.education__collage-image--cover { left: 0; top: 3.45%; width: 78.562%; transform: rotate(-4.03deg); }
+.education__collage-image--practicum { left: 23.547%; top: 17.503%; width: 77.676%; transform: rotate(3.52deg); }
+.education__collage-image--bureau { left: 6.725%; top: 56.07%; width: 51.688%; transform: rotate(-10.31deg); }
+.education__collage-image--university { left: 60.954%; top: 60.923%; width: 42.516%; }
+
+@media (min-width: 1700px) {
+  .education { grid-template-columns: minmax(0, 660fr) minmax(0, 670fr); }
+  .education__collage { width: 100%; aspect-ratio: 670 / 737; }
+  .education__collage-image--cover { left: 0; top: -11.475%; width: 54.056%; }
+  .education__collage-image--practicum { left: 16.201%; top: 2.578%; width: 53.446%; }
+  .education__collage-image--bureau { left: 4.627%; top: 41.144%; width: 35.565%; }
+  .education__collage-image--university { left: 41.94%; top: 45.997%; width: 29.254%; }
+}
 
 @media (max-width: 1080px) {
   .site-layout { grid-template-columns: minmax(0, 1fr); align-content: start; }
