@@ -230,6 +230,11 @@ a:focus-visible,
 
 .resume { display: grid; gap: var(--space-60); }
 .resume__job { display: grid; gap: var(--space-20); }
+.resume__logo { max-width: 100%; height: auto; }
+.resume__logo--jvo { width: 2.375rem; }
+.resume__logo--tass { width: 3.125rem; }
+.resume__logo--art-lebedev { width: 9rem; }
+.resume__logo--cetis { width: 9.25rem; }
 .resume__section, .resume__list { display: grid; gap: var(--space-12); }
 .resume__subheading {
   font-size: var(--text-size);

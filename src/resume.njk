@@ -8,6 +8,7 @@ permalink: /resume/index.html
 <div class="resume">
   {% for job in resume %}
     <article class="resume__job" aria-labelledby="job-{{ loop.index }}">
+      <img class="resume__logo resume__logo--{{ job.logo }}" src="/assets/images/resume/{{ job.logo }}.svg" width="{{ job.logoWidth }}" height="{{ job.logoHeight }}" alt="">
       <header class="entry-heading">
         <h2 class="entry-heading__title" id="job-{{ loop.index }}">{{ job.title }}</h2>
         <p class="entry-heading__date">{{ job.dates }}</p>
