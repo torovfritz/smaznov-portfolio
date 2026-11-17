@@ -8,8 +8,8 @@ permalink: /resume/index.html
 <div class="resume">
   {% for job in resume %}
     <article class="resume__job" aria-labelledby="job-{{ loop.index }}">
-      <span class="resume__logo resume__logo--{{ job.logo }} image-placeholder" style="aspect-ratio: {{ job.logoWidth }} / {{ job.logoHeight }}">
-        <img class="resume__logo-image" src="/assets/images/resume/{{ job.logo }}.svg" width="{{ job.logoWidth }}" height="{{ job.logoHeight }}" alt="">
+      <span class="resume__logo resume__logo--{{ job.logo }}" style="aspect-ratio: {{ job.logoWidth }} / {{ job.logoHeight }}">
+        {{ job.logo | inlineLogo("resume") | safe }}
       </span>
       <header class="entry-heading">
         <h2 class="entry-heading__title" id="job-{{ loop.index }}">{{ job.title }}</h2>
