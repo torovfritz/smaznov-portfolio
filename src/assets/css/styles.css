@@ -27,9 +27,26 @@ ul { padding: 0; }
 a { color: inherit; }
 img { display: block; }
 
-.has-js #main-content img { opacity: 0; transition: opacity 0.25s ease; }
-.has-js #main-content img.image-reveal--ready { opacity: 1; }
+.has-js #main-content img,
+.has-js .portrait__image { opacity: 0; transition: opacity 0.25s ease; }
+.has-js #main-content img.image-reveal--ready,
+.has-js .portrait__image.image-reveal--ready { opacity: 1; }
 .page-enter-pending [data-page-transition] { opacity: 0; }
+
+.image-placeholder { background-color: var(--color-whitesmoke); transition: background-color 0.25s ease; }
+.image-placeholder--ready { background-color: transparent; }
+.portrait { position: relative; display: block; flex: none; overflow: hidden; border-radius: 50%; }
+.portrait.image-placeholder--ready { background-color: var(--color-whitesmoke); }
+.has-js .portrait::before {
+  content: "";
+  position: absolute;
+  inset: -15%;
+  background: url("../images/portrait-preview.webp") center / cover no-repeat;
+  filter: blur(0.375rem);
+  transition: opacity 0.25s ease;
+}
+.has-js .portrait.image-placeholder--ready::before { opacity: 0; }
+.portrait__image { position: relative; width: 100%; height: 100%; object-fit: cover; }
 
 a:focus-visible,
 [tabindex="-1"]:focus-visible {
@@ -184,7 +201,6 @@ a:focus-visible,
     overflow: hidden;
     border-radius: 50%;
   }
-  .scroll-menu__portrait img { width: 100%; height: 100%; object-fit: cover; }
   .scroll-menu__label {
     opacity: 0;
     color: var(--color-white);
@@ -230,7 +246,8 @@ a:focus-visible,
 
 .case-list { display: grid; gap: var(--space-40); }
 .case-card { display: grid; gap: var(--space-20); }
-.case-card__image { width: 100%; height: auto; aspect-ratio: 660 / 422; }
+.case-card__media { position: relative; width: 100%; aspect-ratio: 660 / 422; }
+.case-card__image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 
 .resume { display: grid; gap: var(--space-60); }
 .resume__job { display: grid; gap: var(--space-20); }
@@ -257,19 +274,20 @@ a:focus-visible,
 .education__logo { width: 3.5rem; height: 3.5rem; }
 .education__details { display: grid; align-content: start; gap: var(--space-8); }
 .education__collage { position: relative; width: min(100%, 28.8125rem); aspect-ratio: 461 / 737; margin: 0; }
-.education__collage-image { position: absolute; display: block; height: auto; }
-.education__collage-image--cover { left: 0; top: 3.45%; width: 78.562%; transform: rotate(-4.03deg); }
-.education__collage-image--practicum { left: 23.547%; top: 17.503%; width: 77.676%; transform: rotate(3.52deg); }
-.education__collage-image--bureau { left: 6.725%; top: 56.07%; width: 51.688%; transform: rotate(-10.31deg); }
-.education__collage-image--university { left: 60.954%; top: 60.923%; width: 42.516%; }
+.education__collage-piece { position: absolute; }
+.education__collage-image { width: 100%; height: 100%; object-fit: contain; }
+.education__collage-piece--cover { left: 0; top: 3.45%; width: 78.562%; aspect-ratio: 406 / 287; transform: rotate(-4.03deg); }
+.education__collage-piece--practicum { left: 23.547%; top: 17.503%; width: 77.676%; aspect-ratio: 406 / 287; transform: rotate(3.52deg); }
+.education__collage-piece--bureau { left: 6.725%; top: 56.07%; width: 51.688%; aspect-ratio: 208 / 287; transform: rotate(-10.31deg); }
+.education__collage-piece--university { left: 60.954%; top: 60.923%; width: 42.516%; aspect-ratio: 292 / 287; }
 
 @media (min-width: 1700px) {
   .education { grid-template-columns: minmax(0, 660fr) minmax(0, 670fr); }
   .education__collage { width: 100%; aspect-ratio: 670 / 737; }
-  .education__collage-image--cover { left: 0; top: -11.475%; width: 54.056%; }
-  .education__collage-image--practicum { left: 16.201%; top: 2.578%; width: 53.446%; }
-  .education__collage-image--bureau { left: 4.627%; top: 41.144%; width: 35.565%; }
-  .education__collage-image--university { left: 41.94%; top: 45.997%; width: 29.254%; }
+  .education__collage-piece--cover { left: 0; top: -11.475%; width: 54.056%; }
+  .education__collage-piece--practicum { left: 16.201%; top: 2.578%; width: 53.446%; }
+  .education__collage-piece--bureau { left: 4.627%; top: 41.144%; width: 35.565%; }
+  .education__collage-piece--university { left: 41.94%; top: 45.997%; width: 29.254%; }
 }
 
 @media (max-width: 1080px) {
@@ -309,7 +327,10 @@ a:focus-visible,
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .has-js #main-content img { transition: none; }
+  .has-js #main-content img,
+  .has-js .portrait__image,
+  .has-js .portrait::before,
+  .image-placeholder { transition: none; }
   .scroll-menu, .scroll-menu__button, .scroll-menu__label { transition-duration: 0.01ms; transition-delay: 0ms; }
   .scroll-menu--visible .scroll-menu__button { animation: none; }
 }

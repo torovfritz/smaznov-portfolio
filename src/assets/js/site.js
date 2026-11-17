@@ -21,14 +21,19 @@ function waitForImageLoad(image) {
   });
 }
 
-function prepareImages() {
-  const page = document.querySelector('#main-content');
+function prepareImages(root = document) {
   const pending = new Map();
-  if (!page) return pending;
+  if (!root) return pending;
 
-  page.querySelectorAll('img').forEach((image) => {
+  function markReady(image) {
+    if (!image.naturalWidth) return;
+    image.classList.add('image-reveal--ready');
+    image.closest('.image-placeholder')?.classList.add('image-placeholder--ready');
+  }
+
+  root.querySelectorAll('img').forEach((image) => {
     if (image.complete) {
-      image.classList.add('image-reveal--ready');
+      markReady(image);
       return;
     }
 
@@ -39,7 +44,7 @@ function prepareImages() {
       : waitForImageLoad(image);
 
     pending.set(image, ready.then(() => {
-      image.classList.add('image-reveal--ready');
+      markReady(image);
     }));
   });
 
@@ -100,7 +105,7 @@ swup.hooks.replace('animation:out:await', async (visit) => {
 });
 
 swup.hooks.replace('animation:in:await', async (visit) => {
-  const pending = prepareImages();
+  const pending = prepareImages(document.querySelector('#main-content'));
   if (!visit.animation.animate || reducedMotion.matches) {
     document.documentElement.classList.remove('page-enter-pending');
     return;

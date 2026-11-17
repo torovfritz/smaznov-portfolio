@@ -12,7 +12,9 @@ permalink: /cases/index.html
         <h2 class="entry-heading__title" id="case-{{ loop.index }}">{{ case.title }}</h2>
         <p class="entry-heading__date">{{ case.dates }}</p>
       </header>
-      <img class="case-card__image" src="/assets/images/{{ case.image }}" width="660" height="422" alt="{% if case.isPlaceholder %}Case preview placeholder{% endif %}"{% if not loop.first %} loading="lazy"{% endif %}>
+      <div class="case-card__media image-placeholder">
+        <img class="case-card__image" src="/assets/images/{{ case.image }}" width="660" height="422" alt="{% if case.isPlaceholder %}Case preview placeholder{% endif %}"{% if not loop.first %} loading="lazy"{% endif %}>
+      </div>
       <p class="case-card__description">{{ case.description }}</p>
     </article>
   {% endfor %}

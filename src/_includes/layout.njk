@@ -7,6 +7,7 @@
     <title>{{ title }} — Smaznov.</title>
     <script>document.documentElement.classList.add('has-js');</script>
     <link rel="preload" href="/assets/fonts/dm-sans-variable.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="/assets/images/portrait-preview.webp" as="image" type="image/webp">
     <link rel="stylesheet" href="/assets/css/tokens.css">
     <link rel="stylesheet" href="/assets/css/styles.css">
   </head>
@@ -15,7 +16,7 @@
     <div class="site-layout">
       <header class="site-layout__sidebar site-header">
         <a class="site-brand" href="/" aria-label="Smaznov. — Main"{% if pageKey == 'main' %} aria-current="page"{% endif %}>
-          <img class="site-brand__portrait" src="/assets/images/portrait.png" width="71" height="71" alt="">
+          <span class="site-brand__portrait portrait image-placeholder"><img class="portrait__image" src="/assets/images/portrait.png" width="71" height="71" alt=""></span>
           <span class="site-brand__name">Smaznov.</span>
         </a>
         <div class="site-header__intro" id="page-intro" data-page-transition>
@@ -32,7 +33,7 @@
     </div>
     <div class="scroll-menu" data-scroll-menu hidden>
       <button class="scroll-menu__button" type="button" aria-label="Scroll to top" data-scroll-menu-button>
-        <span class="scroll-menu__portrait"><img src="/assets/images/portrait.png" alt="" width="28" height="28"></span>
+        <span class="scroll-menu__portrait portrait image-placeholder"><img class="portrait__image" src="/assets/images/portrait.png" alt="" width="28" height="28"></span>
         <span class="scroll-menu__label" data-scroll-menu-label>{% if pageKey == 'main' %}Smaznov.{% else %}{{ title }}{% endif %}</span>
       </button>
     </div>
