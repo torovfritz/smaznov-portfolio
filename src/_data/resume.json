@@ -1,6 +1,9 @@
 [
   {
     "title": "Senior Product Designer, JVO",
+    "logo": "jvo",
+    "logoWidth": 38,
+    "logoHeight": 55,
     "dates": "Dec 2024 – Sep 2026",
     "description": "JVO is a B2B SaaS platform for marketplace sellers, combining data analytics, AI-powered automation, SEO, pricing, and logistics tools. In 2024, JVO customers generated 15% of Wildberries’ revenue.",
     "groups": [
@@ -25,6 +28,9 @@
   },
   {
     "title": "Senior User Interface Designer, TASS",
+    "logo": "tass",
+    "logoWidth": 50,
+    "logoHeight": 54,
     "dates": "Nov 2016 – Dec 2024",
     "description": "TASS is one of Russia’s largest news agencies. Its editorial teams publish more than 3,000 news items across over 70 news feeds every day.",
     "groups": [
@@ -49,6 +55,9 @@
   },
   {
     "title": "Designer, Art. Lebedev Studio",
+    "logo": "art-lebedev",
+    "logoWidth": 144,
+    "logoHeight": 41,
     "dates": "Apr 2016 – Jun 2016",
     "description": "Art. Lebedev Studio is one of Russia’s largest and most recognized multidisciplinary design studios, working across digital products, interfaces, branding, industrial design, and urban environments.",
     "groups": [
@@ -63,6 +72,9 @@
   },
   {
     "title": "Designer, Cetis Branding Agency",
+    "logo": "cetis",
+    "logoWidth": 148,
+    "logoHeight": 60,
     "dates": "May 2011 – Apr 2016",
     "description": "",
     "groups": [
