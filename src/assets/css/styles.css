@@ -27,8 +27,8 @@ ul { padding: 0; }
 a { color: inherit; }
 img { display: block; }
 
-.image-reveal { transition: opacity 0.25s ease; }
-.image-reveal--pending,
+.has-js #main-content img { opacity: 0; transition: opacity 0.25s ease; }
+.has-js #main-content img.image-reveal--ready { opacity: 1; }
 .page-enter-pending [data-page-transition] { opacity: 0; }
 
 a:focus-visible,
@@ -309,7 +309,7 @@ a:focus-visible,
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .image-reveal { transition: none; }
+  .has-js #main-content img { transition: none; }
   .scroll-menu, .scroll-menu__button, .scroll-menu__label { transition-duration: 0.01ms; transition-delay: 0ms; }
   .scroll-menu--visible .scroll-menu__button { animation: none; }
 }

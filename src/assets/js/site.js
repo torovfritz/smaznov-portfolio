@@ -8,31 +8,38 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const scrollMenu = createScrollMenu();
 const imageWaitLimit = 400;
 
+function waitForImageLoad(image) {
+  return new Promise((resolve) => {
+    const settle = () => {
+      image.removeEventListener('load', settle);
+      image.removeEventListener('error', settle);
+      resolve();
+    };
+    image.addEventListener('load', settle);
+    image.addEventListener('error', settle);
+    if (image.complete) settle();
+  });
+}
+
 function prepareImages() {
   const page = document.querySelector('#main-content');
   const pending = new Map();
-  if (!page || reducedMotion.matches) return pending;
+  if (!page) return pending;
 
   page.querySelectorAll('img').forEach((image) => {
-    if (image.complete) return;
-
-    image.classList.add('image-reveal', 'image-reveal--pending');
+    if (image.complete) {
+      image.classList.add('image-reveal--ready');
+      return;
+    }
 
     const ready = typeof image.decode === 'function'
-      ? image.decode().catch(() => {})
-      : new Promise((resolve) => {
-        const settle = () => {
-          image.removeEventListener('load', settle);
-          image.removeEventListener('error', settle);
-          resolve();
-        };
-        image.addEventListener('load', settle);
-        image.addEventListener('error', settle);
-        if (image.complete) settle();
-      });
+      ? image.decode().catch(() => {
+        if (!image.complete) return waitForImageLoad(image);
+      })
+      : waitForImageLoad(image);
 
     pending.set(image, ready.then(() => {
-      image.classList.remove('image-reveal--pending');
+      image.classList.add('image-reveal--ready');
     }));
   });
 
