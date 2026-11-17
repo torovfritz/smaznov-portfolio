@@ -29,8 +29,29 @@ img { display: block; }
 
 .has-js #main-content img { opacity: 0; transition: opacity 0.25s ease; }
 .has-js #main-content img.image-reveal--ready { opacity: 1; }
-.has-js .portrait__image { opacity: 0; transform: scale(0.65); transform-origin: center; }
-.has-js .portrait__image.image-reveal--ready { opacity: 1; transform: scale(0.95); }
+.has-js .portrait__image {
+  transform: scale(0.65);
+  transform-origin: center;
+  --portrait-mask: linear-gradient(to right, transparent, #000 25%, #000 75%, transparent);
+  -webkit-mask-image: var(--portrait-mask);
+  mask-image: var(--portrait-mask);
+  -webkit-mask-size: 0% 100%;
+  mask-size: 0% 100%;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.has-js .portrait__image.image-reveal--ready {
+  transform: scale(0.95);
+  -webkit-mask-size: 200% 100%;
+  mask-size: 200% 100%;
+  animation: portrait-emerge 1s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+@keyframes portrait-emerge {
+  from { transform: scale(0.65); -webkit-mask-size: 0% 100%; mask-size: 0% 100%; }
+  to { transform: scale(0.95); -webkit-mask-size: 200% 100%; mask-size: 200% 100%; }
+}
 .page-enter-pending [data-page-transition] { opacity: 0; }
 
 .image-placeholder { background-color: var(--color-whitesmoke); transition: background-color 0.25s ease; }
@@ -332,6 +353,7 @@ a:focus-visible,
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .has-js .portrait__image.image-reveal--ready { animation: none; }
   .has-js #main-content img,
   .image-placeholder { transition: none; }
   .has-js .image-placeholder:not(.image-placeholder--ready) { animation: show-image-placeholder 0s 400ms both; }
