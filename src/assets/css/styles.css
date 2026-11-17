@@ -27,10 +27,10 @@ ul { padding: 0; }
 a { color: inherit; }
 img { display: block; }
 
-.has-js #main-content img,
-.has-js .portrait__image { opacity: 0; transition: opacity 0.25s ease; }
-.has-js #main-content img.image-reveal--ready,
-.has-js .portrait__image.image-reveal--ready { opacity: 1; }
+.has-js #main-content img { opacity: 0; transition: opacity 0.25s ease; }
+.has-js #main-content img.image-reveal--ready { opacity: 1; }
+.has-js .portrait__image { transform: translateY(110%); }
+.has-js .portrait__image.image-reveal--ready { transform: none; }
 .page-enter-pending [data-page-transition] { opacity: 0; }
 
 .image-placeholder { background-color: var(--color-whitesmoke); transition: background-color 0.25s ease; }
@@ -320,7 +320,6 @@ a:focus-visible,
 
 @media (prefers-reduced-motion: reduce) {
   .has-js #main-content img,
-  .has-js .portrait__image,
   .image-placeholder { transition: none; }
   .scroll-menu, .scroll-menu__button, .scroll-menu__label { transition-duration: 0.01ms; transition-delay: 0ms; }
   .scroll-menu--visible .scroll-menu__button { animation: none; }

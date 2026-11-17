@@ -29,6 +29,13 @@ function prepareImages(root = document) {
     if (!image.naturalWidth) return;
     image.classList.add('image-reveal--ready');
     image.closest('.image-placeholder')?.classList.add('image-placeholder--ready');
+
+    if (image.classList.contains('portrait__image') && !reducedMotion.matches) {
+      const animation = animate(image, {
+        transform: ['translateY(110%)', 'translateY(0)']
+      }, { duration: 0.6, ease: [0.22, 1, 0.36, 1] });
+      animation.then(() => animation.cancel());
+    }
   }
 
   root.querySelectorAll('img').forEach((image) => {
