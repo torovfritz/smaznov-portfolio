@@ -7,6 +7,7 @@ import { createScrollMenu } from './scroll-menu.js';
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const scrollMenu = createScrollMenu();
 const imageWaitLimit = 400;
+const portraitRevealDuration = 1;
 
 function waitForImageLoad(image) {
   return new Promise((resolve) => {
@@ -29,6 +30,13 @@ function prepareImages(root = document) {
     if (!image.naturalWidth) return;
     image.classList.add('image-reveal--ready');
     image.closest('.image-placeholder')?.classList.add('image-placeholder--ready');
+
+    if (image.classList.contains('portrait__image') && !reducedMotion.matches) {
+      const animation = animate(image, {
+        transform: ['translateY(65%) scale(0.65)', 'translateY(0) scale(1)']
+      }, { duration: portraitRevealDuration, ease: [0.4, 0, 0.2, 1] });
+      animation.then(() => animation.cancel());
+    }
   }
 
   root.querySelectorAll('img').forEach((image) => {
