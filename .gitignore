@@ -5,3 +5,4 @@ _site/
 .DS_Store
 .cache/
 qa/
+src/assets/js/site.bundle.js

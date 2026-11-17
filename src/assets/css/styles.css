@@ -128,9 +128,12 @@ a:focus-visible,
     justify-content: center;
     pointer-events: none;
     visibility: hidden;
+    opacity: 1;
+    transition: opacity 100ms ease;
   }
 
   .scroll-menu:not([hidden]).scroll-menu--visible { visibility: visible; }
+  .scroll-menu:not([hidden]).scroll-menu--leaving { opacity: 0; }
 
   .scroll-menu__button {
     box-sizing: border-box;
@@ -154,14 +157,16 @@ a:focus-visible,
     white-space: nowrap;
     cursor: pointer;
     pointer-events: auto;
-    opacity: 0;
-    transform: scale(0.85);
-    transition: width 360ms cubic-bezier(0.22, 1, 0.36, 1),
-                padding 360ms cubic-bezier(0.22, 1, 0.36, 1),
-                opacity 140ms ease, transform 180ms ease;
+    transform: scale(0);
+    transition: width var(--scroll-menu-reveal-duration, 360ms) cubic-bezier(0.3, 0.15, 0.25, 1),
+                padding var(--scroll-menu-reveal-duration, 360ms) cubic-bezier(0.3, 0.15, 0.25, 1);
   }
 
-  .scroll-menu--visible .scroll-menu__button { opacity: 1; transform: scale(1); }
+  .scroll-menu--visible .scroll-menu__button {
+    transform: scale(1);
+    animation: scroll-menu-circle-in 360ms both;
+  }
+  .scroll-menu--leaving .scroll-menu__button { pointer-events: none; }
   .scroll-menu--expanded .scroll-menu__button {
     width: var(--scroll-menu-expanded-width);
     padding-left: 0.5rem;
@@ -179,15 +184,30 @@ a:focus-visible,
   .scroll-menu__label {
     opacity: 0;
     color: var(--color-white);
-    clip-path: inset(0 100% 0 0);
-    transition: opacity 220ms ease, clip-path 360ms cubic-bezier(0.22, 1, 0.36, 1);
+    -webkit-mask-image: linear-gradient(to right, #000 40%, transparent 50%);
+    mask-image: linear-gradient(to right, #000 40%, transparent 50%);
+    -webkit-mask-size: 250% 100%;
+    mask-size: 250% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+    transition: opacity 220ms ease,
+                -webkit-mask-position var(--scroll-menu-reveal-duration, 360ms) cubic-bezier(0.3, 0.15, 0.25, 1),
+                mask-position var(--scroll-menu-reveal-duration, 360ms) cubic-bezier(0.3, 0.15, 0.25, 1);
   }
   .scroll-menu--expanded .scroll-menu__label {
     opacity: 1;
-    clip-path: inset(0);
-    transition-delay: 120ms;
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
   }
   .scroll-menu__button:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+
+  @keyframes scroll-menu-circle-in {
+    0% { transform: scale(0); animation-timing-function: cubic-bezier(0.18, 0.75, 0.3, 1); }
+    55% { transform: scale(1.4); animation-timing-function: cubic-bezier(0.3, 0, 0.2, 1); }
+    100% { transform: scale(1); }
+  }
 }
 
 .entry-heading { display: grid; gap: var(--space-8); }
@@ -264,5 +284,6 @@ a:focus-visible,
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .scroll-menu__button, .scroll-menu__label { transition-duration: 0.01ms; transition-delay: 0ms; }
+  .scroll-menu, .scroll-menu__button, .scroll-menu__label { transition-duration: 0.01ms; transition-delay: 0ms; }
+  .scroll-menu--visible .scroll-menu__button { animation: none; }
 }

@@ -17,13 +17,13 @@
           <img class="site-brand__portrait" src="/assets/images/portrait.png" width="71" height="71" alt="">
           <span class="site-brand__name">Smaznov.</span>
         </a>
-        <div class="site-header__intro">
+        <div class="site-header__intro" id="page-intro" data-page-transition>
           <h1 class="site-header__title" id="page-title">{% if pageKey == 'main' %}Digital<br>Product Designer{% else %}{{ title }}{% endif %}</h1>
           {% if pageKey == 'main' %}<p class="site-header__tagline">I turn ideas into&nbsp;thoughtful digital&nbsp;experiences.</p>{% endif %}
         </div>
         {% include "navigation.njk" %}
       </header>
-      <main class="site-layout__content" id="main-content" tabindex="-1" aria-labelledby="page-title">
+      <main class="site-layout__content" id="main-content" tabindex="-1" aria-labelledby="page-title" data-page-transition data-page-key="{{ pageKey }}" data-page-label="{% if pageKey == 'main' %}Smaznov.{% else %}{{ title }}{% endif %}">
         <div class="site-layout__content-inner">
           {{ content | safe }}
         </div>
@@ -35,6 +35,6 @@
         <span class="scroll-menu__label" data-scroll-menu-label>{% if pageKey == 'main' %}Smaznov.{% else %}{{ title }}{% endif %}</span>
       </button>
     </div>
-    <script src="/assets/js/scroll-menu.js" defer></script>
+    <script src="/assets/js/site.bundle.js" defer></script>
   </body>
 </html>

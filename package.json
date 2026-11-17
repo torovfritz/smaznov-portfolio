@@ -12,6 +12,13 @@
     "node": ">=20"
   },
   "devDependencies": {
-    "@11ty/eleventy": "^3.1.8"
+    "@11ty/eleventy": "^3.1.8",
+    "esbuild": "^0.28.2"
+  },
+  "dependencies": {
+    "@swup/a11y-plugin": "^5.2.1",
+    "@swup/head-plugin": "^2.3.1",
+    "motion": "^14.14.0",
+    "swup": "^4.10.0"
   }
 }
