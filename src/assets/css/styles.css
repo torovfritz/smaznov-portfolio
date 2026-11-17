@@ -29,8 +29,8 @@ img { display: block; }
 
 .has-js #main-content img { opacity: 0; transition: opacity 0.25s ease; }
 .has-js #main-content img.image-reveal--ready { opacity: 1; }
-.has-js .portrait__image { transform: translateY(65%) scale(0.65); transform-origin: center bottom; }
-.has-js .portrait__image.image-reveal--ready { transform: translateY(-2.5%) scale(0.95); }
+.has-js .portrait__image { opacity: 0; transform: scale(0.65); transform-origin: center; }
+.has-js .portrait__image.image-reveal--ready { opacity: 1; transform: scale(0.95); }
 .page-enter-pending [data-page-transition] { opacity: 0; }
 
 .image-placeholder { background-color: var(--color-whitesmoke); transition: background-color 0.25s ease; }

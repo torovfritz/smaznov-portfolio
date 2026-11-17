@@ -33,7 +33,8 @@ function prepareImages(root = document) {
 
     if (image.classList.contains('portrait__image') && !reducedMotion.matches) {
       const animation = animate(image, {
-        transform: ['translateY(65%) scale(0.65)', 'translateY(-2.5%) scale(0.95)']
+        transform: ['scale(0.65)', 'scale(0.95)'],
+        opacity: [0, 1]
       }, { duration: portraitRevealDuration, ease: [0.4, 0, 0.2, 1] });
       animation.then(() => animation.cancel());
     }
