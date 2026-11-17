@@ -39,11 +39,16 @@ img { display: block; }
 .education__logo.image-placeholder { border-radius: 1rem; }
 .has-js .image-placeholder { background-color: transparent; }
 .has-js .image-placeholder:not(.image-placeholder--ready) {
-  animation: show-image-placeholder 120ms ease-out 400ms both;
+  animation: show-image-placeholder 120ms ease-out 400ms both,
+             pulse-image-placeholder 1.8s ease-in-out 520ms infinite;
 }
 @keyframes show-image-placeholder {
   from { background-color: transparent; }
   to { background-color: var(--color-whitesmoke); }
+}
+@keyframes pulse-image-placeholder {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(0.94); }
 }
 .portrait { position: relative; display: block; flex: none; overflow: hidden; border-radius: 50%; background-color: var(--color-black); }
 .portrait__image { position: relative; width: 100%; height: 100%; object-fit: cover; }
@@ -332,7 +337,7 @@ a:focus-visible,
   .has-js #main-content img,
   .has-js .portrait__image,
   .image-placeholder { transition: none; }
-  .has-js .image-placeholder:not(.image-placeholder--ready) { animation-duration: 0s; }
+  .has-js .image-placeholder:not(.image-placeholder--ready) { animation: show-image-placeholder 0s 400ms both; }
   .scroll-menu, .scroll-menu__button, .scroll-menu__label { transition-duration: 0.01ms; transition-delay: 0ms; }
   .scroll-menu--visible .scroll-menu__button { animation: none; }
 }
