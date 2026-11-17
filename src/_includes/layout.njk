@@ -5,7 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="{{ description }}">
     <title>{{ title }} — Smaznov.</title>
-    <script>document.documentElement.classList.add('has-js');</script>
+    <script>
+      document.documentElement.classList.add('has-js');
+      document.addEventListener('load', (event) => {
+        const image = event.target;
+        if (!(image instanceof HTMLImageElement)) return;
+        const placeholder = image.closest('.image-placeholder');
+        if (!placeholder) return;
+
+        const reveal = () => {
+          if (!image.naturalWidth) return;
+          image.classList.add('image-reveal--ready');
+          placeholder.classList.add('image-placeholder--ready');
+        };
+
+        if (typeof image.decode === 'function') image.decode().then(reveal, reveal);
+        else reveal();
+      }, true);
+    </script>
     <link rel="preload" href="/assets/fonts/dm-sans-variable.ttf" as="font" type="font/ttf" crossorigin>
     <link rel="stylesheet" href="/assets/css/tokens.css">
     <link rel="stylesheet" href="/assets/css/styles.css">

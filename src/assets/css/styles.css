@@ -35,6 +35,14 @@ img { display: block; }
 
 .image-placeholder { background-color: var(--color-whitesmoke); transition: background-color 0.25s ease; }
 .image-placeholder--ready { background-color: transparent; }
+.has-js .image-placeholder { background-color: transparent; }
+.has-js .image-placeholder:not(.image-placeholder--ready) {
+  animation: show-image-placeholder 120ms ease-out 400ms both;
+}
+@keyframes show-image-placeholder {
+  from { background-color: transparent; }
+  to { background-color: var(--color-whitesmoke); }
+}
 .portrait { position: relative; display: block; flex: none; overflow: hidden; border-radius: 50%; background-color: var(--color-black); }
 .portrait__image { position: relative; width: 100%; height: 100%; object-fit: cover; }
 
@@ -321,6 +329,7 @@ a:focus-visible,
 @media (prefers-reduced-motion: reduce) {
   .has-js #main-content img,
   .image-placeholder { transition: none; }
+  .has-js .image-placeholder:not(.image-placeholder--ready) { animation-duration: 0s; }
   .scroll-menu, .scroll-menu__button, .scroll-menu__label { transition-duration: 0.01ms; transition-delay: 0ms; }
   .scroll-menu--visible .scroll-menu__button { animation: none; }
 }
