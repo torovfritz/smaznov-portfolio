@@ -29,29 +29,26 @@ img { display: block; }
 
 .has-js #main-content img { opacity: 0; transition: opacity 0.25s ease; }
 .has-js #main-content img.image-reveal--ready { opacity: 1; }
-.has-js .portrait__image {
-  transform: scale(0.65);
-  transform-origin: center;
-  --portrait-mask: linear-gradient(to right, transparent, #000 25%, #000 75%, transparent);
-  -webkit-mask-image: var(--portrait-mask);
-  mask-image: var(--portrait-mask);
-  -webkit-mask-size: 0% 100%;
-  mask-size: 0% 100%;
-  -webkit-mask-position: center;
-  mask-position: center;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-}
+.has-js .portrait__image { transform: scale(0.65); transform-origin: center; }
 .has-js .portrait__image.image-reveal--ready {
   transform: scale(0.95);
-  -webkit-mask-size: 200% 100%;
-  mask-size: 200% 100%;
-  animation: portrait-emerge 1s cubic-bezier(0.4, 0, 0.2, 1) both;
+  animation: portrait-zoom var(--portrait-reveal-duration) var(--portrait-reveal-ease) both;
 }
-@keyframes portrait-emerge {
-  from { transform: scale(0.65); -webkit-mask-size: 0% 100%; mask-size: 0% 100%; }
-  to { transform: scale(0.95); -webkit-mask-size: 200% 100%; mask-size: 200% 100%; }
+.portrait__veil { display: none; }
+.has-js .portrait__veil { display: block; position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.has-js .portrait__veil--left { background: linear-gradient(to right, #000 0 55%, transparent 95%); }
+.has-js .portrait__veil--right { background: linear-gradient(to left, #000 0 55%, transparent 95%); }
+.has-js .portrait__image.image-reveal--ready ~ .portrait__veil--left {
+  transform: translateX(-100%);
+  animation: portrait-veil-left var(--portrait-reveal-duration) var(--portrait-reveal-ease) both;
 }
+.has-js .portrait__image.image-reveal--ready ~ .portrait__veil--right {
+  transform: translateX(100%);
+  animation: portrait-veil-right var(--portrait-reveal-duration) var(--portrait-reveal-ease) both;
+}
+@keyframes portrait-zoom { from { transform: scale(0.65); } to { transform: scale(0.95); } }
+@keyframes portrait-veil-left { from { transform: none; } to { transform: translateX(-100%); } }
+@keyframes portrait-veil-right { from { transform: none; } to { transform: translateX(100%); } }
 .page-enter-pending [data-page-transition] { opacity: 0; }
 
 .image-placeholder { background-color: var(--color-whitesmoke); transition: background-color 0.25s ease; }
@@ -69,7 +66,7 @@ img { display: block; }
   0%, 100% { filter: brightness(1); }
   50% { filter: brightness(0.94); }
 }
-.portrait { position: relative; display: block; flex: none; overflow: hidden; border-radius: 50%; background-color: var(--color-black); }
+.portrait { --portrait-reveal-duration: 1s; --portrait-reveal-ease: cubic-bezier(0.4, 0, 0.2, 1); position: relative; display: block; flex: none; overflow: hidden; border-radius: 50%; background-color: var(--color-black); }
 .portrait__image { position: relative; width: 100%; height: 100%; object-fit: cover; }
 
 a:focus-visible,
@@ -354,6 +351,7 @@ a:focus-visible,
 
 @media (prefers-reduced-motion: reduce) {
   .has-js .portrait__image.image-reveal--ready { animation: none; }
+  .has-js .portrait__image.image-reveal--ready ~ .portrait__veil { display: none; }
   .has-js #main-content img,
   .image-placeholder { transition: none; }
   .has-js .image-placeholder:not(.image-placeholder--ready) { animation: show-image-placeholder 0s 400ms both; }
