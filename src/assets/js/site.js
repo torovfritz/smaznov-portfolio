@@ -6,6 +6,53 @@ import { createScrollMenu } from './scroll-menu.js';
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const scrollMenu = createScrollMenu();
+const imageWaitLimit = 400;
+
+function prepareImages() {
+  const page = document.querySelector('#main-content');
+  const pending = new Map();
+  if (!page || reducedMotion.matches) return pending;
+
+  page.querySelectorAll('img').forEach((image) => {
+    if (image.complete) return;
+
+    image.classList.add('image-reveal', 'image-reveal--pending');
+
+    const ready = typeof image.decode === 'function'
+      ? image.decode().catch(() => {})
+      : new Promise((resolve) => {
+        const settle = () => {
+          image.removeEventListener('load', settle);
+          image.removeEventListener('error', settle);
+          resolve();
+        };
+        image.addEventListener('load', settle);
+        image.addEventListener('error', settle);
+        if (image.complete) settle();
+      });
+
+    pending.set(image, ready.then(() => {
+      image.classList.remove('image-reveal--pending');
+    }));
+  });
+
+  return pending;
+}
+
+async function waitForVisibleImages(pending) {
+  const visible = [...pending].filter(([image]) => {
+    const bounds = image.getBoundingClientRect();
+    return bounds.top < window.innerHeight && bounds.bottom > 0;
+  });
+  if (!visible.length) return;
+
+  let timeout;
+  await Promise.race([
+    Promise.all(visible.map(([, ready]) => ready)),
+    new Promise((resolve) => { timeout = window.setTimeout(resolve, imageWaitLimit); })
+  ]);
+  window.clearTimeout(timeout);
+}
 
 function updatePersistentElements() {
   const page = document.querySelector('#main-content');
@@ -32,6 +79,8 @@ const swup = new Swup({
   plugins: [new SwupA11yPlugin(), new SwupHeadPlugin()]
 });
 
+prepareImages();
+
 swup.hooks.replace('animation:out:await', async (visit) => {
   if (!visit.animation.animate || reducedMotion.matches) return;
 
@@ -39,18 +88,34 @@ swup.hooks.replace('animation:out:await', async (visit) => {
     opacity: [1, 0],
     transform: ['none', 'translateY(-4px)']
   }, { duration: 0.2, ease: 'easeInOut' });
+
+  if (!visit.done) document.documentElement.classList.add('page-enter-pending');
 });
 
 swup.hooks.replace('animation:in:await', async (visit) => {
-  if (!visit.animation.animate || reducedMotion.matches) return;
+  const pending = prepareImages();
+  if (!visit.animation.animate || reducedMotion.matches) {
+    document.documentElement.classList.remove('page-enter-pending');
+    return;
+  }
 
-  const animation = animate('[data-page-transition]', {
-    opacity: [0, 1],
-    transform: ['translateY(4px)', 'none']
-  }, { duration: 0.3, ease: [0.22, 1, 0.36, 1] });
+  try {
+    await waitForVisibleImages(pending);
 
-  await animation;
-  animation.cancel();
+    const animation = animate('[data-page-transition]', {
+      opacity: [0, 1],
+      transform: ['translateY(4px)', 'none']
+    }, { duration: 0.3, ease: [0.22, 1, 0.36, 1] });
+
+    document.documentElement.classList.remove('page-enter-pending');
+    await animation;
+    animation.cancel();
+  } finally {
+    document.documentElement.classList.remove('page-enter-pending');
+  }
 });
 
 swup.hooks.on('page:view', updatePersistentElements);
+swup.hooks.on('visit:abort', () => document.documentElement.classList.remove('page-enter-pending'));
+swup.hooks.on('visit:end', () => document.documentElement.classList.remove('page-enter-pending'));
+swup.hooks.on('visit:fail', () => document.documentElement.classList.remove('page-enter-pending'));
