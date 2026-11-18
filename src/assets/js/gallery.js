@@ -5,10 +5,18 @@ export function createGallery(root) {
     const medium = window.matchMedia('(min-width: 521px) and (max-width: 1080px)');
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const items = [...root.querySelectorAll('[data-gallery-item]')];
-    const revealed = new WeakSet();
     const main = root.closest('.site-layout__content');
     const footer = document.querySelector('.site-footer');
     let frame = 0;
+
+    function setSpace(name, value) {
+        const pixels = `${Math.round(Math.max(0, value))}px`;
+        if (root.style.getPropertyValue(name) !== pixels) root.style.setProperty(name, pixels);
+    }
+
+    function setItemValue(item, property, value) {
+        if (item.style.getPropertyValue(property) !== value) item.style.setProperty(property, value);
+    }
 
     function update() {
         frame = 0;
@@ -18,24 +26,39 @@ export function createGallery(root) {
         const center = viewportHeight / 2;
         const firstInfo = items[0].querySelector('[data-gallery-info]');
         const lastInfo = items[items.length - 1].querySelector('[data-gallery-info]');
+        const firstInfoInner = firstInfo.querySelector('.home-gallery__info-inner');
+        const lastInfoInner = lastInfo.querySelector('.home-gallery__info-inner');
         const firstInfoMargin = parseFloat(getComputedStyle(firstInfo).marginTop) || 0;
         const lastInfoMargin = parseFloat(getComputedStyle(lastInfo).marginTop) || 0;
         const galleryTop = root.getBoundingClientRect().top + window.scrollY;
-        const availableHeight = Math.max(160, viewportHeight - firstInfo.offsetHeight - firstInfoMargin - (medium.matches ? 32 : 64));
-        const maxWidth = Math.min(root.clientWidth, availableHeight * 1104 / 920);
+        const verticalInset = mobile.matches ? 32 : Math.min(144, Math.max(64, viewportHeight * 0.1));
+        let maxWidth = 0;
+        for (let pass = 0; pass < 3; pass++) {
+            const infoHeight = firstInfoInner.offsetHeight;
+            const availableHeight = Math.max(160, viewportHeight - infoHeight - firstInfoMargin - verticalInset * 2);
+            maxWidth = Math.min(root.clientWidth, availableHeight * 1104 / 920);
+            const captionWidth = `${Math.round(maxWidth)}px`;
+            if (root.style.getPropertyValue('--gallery-caption-width') === captionWidth) break;
+            root.style.setProperty('--gallery-caption-width', captionWidth);
+            if (firstInfoInner.offsetHeight === infoHeight) break;
+        }
         const fixedWidth = root.clientWidth;
         const cardHeight = (mobile.matches ? fixedWidth : maxWidth) * 920 / 1104;
-        const firstHeight = cardHeight + firstInfoMargin + firstInfo.offsetHeight;
-        const lastHeight = cardHeight + lastInfoMargin + lastInfo.offsetHeight;
+        const firstHeight = cardHeight + firstInfoMargin + firstInfoInner.offsetHeight;
+        const lastHeight = cardHeight + lastInfoMargin + lastInfoInner.offsetHeight;
         const mainBottomPadding = main ? parseFloat(getComputedStyle(main).paddingBottom) || 0 : 0;
         const footerHeight = footer?.offsetHeight || 0;
-        const peekHeight = Math.min(viewportHeight * 0.3, cardHeight * 0.738 * 0.6);
+        // The main content already adds 40px above the gallery at medium widths.
+        const mediumTopSpace = Math.min(64, Math.max(24, viewportHeight * 0.05));
         const topSpace = medium.matches
-            ? viewportHeight - peekHeight - galleryTop
+            ? mediumTopSpace
             : (viewportHeight - firstHeight) / 2 - galleryTop;
 
-        root.style.setProperty('--gallery-top-space', `${Math.max(0, topSpace)}px`);
-        root.style.setProperty('--gallery-bottom-space', `${Math.max(0, (viewportHeight - lastHeight) / 2 - mainBottomPadding - footerHeight)}px`);
+        setSpace('--gallery-top-space', topSpace);
+        setSpace('--gallery-bottom-space', (viewportHeight - lastHeight) / 2 - mainBottomPadding - footerHeight);
+        root.classList.add('is-ready');
+
+        if (mobile.matches) return;
 
         let nearest = null;
         let distance = Infinity;
@@ -53,11 +76,7 @@ export function createGallery(root) {
             item.classList.toggle('is-active', active);
             const media = item.querySelector('.home-gallery__media');
             const info = item.querySelector('[data-gallery-info]');
-
-            if (mobile.matches) {
-                info.inert = false;
-                continue;
-            }
+            const infoInner = info.querySelector('.home-gallery__info-inner');
 
             const bounds = media.getBoundingClientRect();
             const fromCenter = Math.abs((bounds.top + bounds.bottom) / 2 - center);
@@ -67,17 +86,12 @@ export function createGallery(root) {
             }
             if (reducedMotion.matches) progress = active ? 1 : 0;
 
-            item.style.setProperty('--gallery-card-width', `${Math.round(maxWidth * (0.738 + 0.262 * progress))}px`);
-            if (progress > 0.8 || (item === items[0] && !medium.matches && window.scrollY === 0)) revealed.add(item);
-
-            // Keep the caption visible until its card has almost left the viewport.
-            const exitDistance = viewportHeight * 0.15;
-            const visibleDistance = Math.min(bounds.bottom, viewportHeight - bounds.top);
-            const enterOpacity = Math.min(1, Math.max(0, (progress - 0.55) / 0.25));
-            const exitOpacity = Math.min(1, Math.max(0, (visibleDistance + exitDistance) / exitDistance));
-            const infoOpacity = Math.min(revealed.has(item) ? 1 : enterOpacity, exitOpacity);
-            item.style.setProperty('--gallery-info-opacity', infoOpacity.toFixed(3));
-            info.inert = infoOpacity < 0.1;
+            const cardWidth = Math.round(maxWidth * (0.738 + 0.262 * progress));
+            const cardScale = maxWidth ? cardWidth / maxWidth : 1;
+            // Scale the full-size caption layout with the card to preserve text line breaks.
+            setItemValue(item, '--gallery-card-width', `${cardWidth}px`);
+            setItemValue(item, '--gallery-card-scale', cardScale.toFixed(4));
+            setItemValue(item, '--gallery-info-height', `${Math.ceil(infoInner.offsetHeight * cardScale)}px`);
         }
     }
 
@@ -85,15 +99,22 @@ export function createGallery(root) {
         if (!frame) frame = requestAnimationFrame(update);
     }
 
-    window.addEventListener('scroll', scheduleUpdate, { passive: true });
+    function onScroll() {
+        if (!mobile.matches) scheduleUpdate();
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', scheduleUpdate);
     mobile.addEventListener('change', scheduleUpdate);
     medium.addEventListener('change', scheduleUpdate);
     reducedMotion.addEventListener('change', scheduleUpdate);
     update();
+    document.fonts?.ready.then(() => {
+        if (root.isConnected) scheduleUpdate();
+    });
 
     return () => {
-        window.removeEventListener('scroll', scheduleUpdate);
+        window.removeEventListener('scroll', onScroll);
         window.removeEventListener('resize', scheduleUpdate);
         mobile.removeEventListener('change', scheduleUpdate);
         medium.removeEventListener('change', scheduleUpdate);

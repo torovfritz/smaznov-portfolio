@@ -11,10 +11,13 @@ description: I turn ideas into thoughtful digital experiences.
         <img class="home-gallery__image" src="/assets/images/case-placeholder.png" width="1320" height="844" alt=""{% if not loop.first %} loading="lazy"{% endif %}>
       </div>
       <div class="home-gallery__info" data-gallery-info>
-        <h2 class="home-gallery__title">{{ item.title }}</h2>
-        <p class="home-gallery__date">{{ item.date }}</p>
-        {% if item.description %}<p class="home-gallery__description">{{ item.description }}</p>{% endif %}
-        {% if item.type == 'case' %}<a class="home-gallery__link" href="{{ item.url }}">Case Study</a>{% endif %}
+        <div class="home-gallery__info-inner">
+          <div class="home-gallery__copy">
+            <h2 class="home-gallery__title">{{ item.title }}</h2>
+            {% if item.description %}<p class="home-gallery__description">{{ item.description }}</p>{% endif %}
+          </div>
+          {% if item.type == 'case' %}<a class="home-gallery__link" href="{{ item.url }}">Case Study</a>{% endif %}
+        </div>
       </div>
     </article>
   {% endfor %}

@@ -1,12 +1,12 @@
 [
-  { "type": "case", "title": "Case name", "date": "Date", "description": "Description", "url": "/cases/#case-1" },
-  { "type": "project", "title": "Project name", "date": "Date" },
-  { "type": "project", "title": "Project name", "date": "Date" },
-  { "type": "project", "title": "Project name", "date": "Date" },
-  { "type": "project", "title": "Project name", "date": "Date" },
-  { "type": "project", "title": "Project name", "date": "Date" },
-  { "type": "project", "title": "Project name", "date": "Date" },
-  { "type": "project", "title": "Project name", "date": "Date" },
-  { "type": "project", "title": "Project name", "date": "Date" },
-  { "type": "project", "title": "Project name", "date": "Date" }
+  { "type": "case", "title": "Atlas Workspace", "description": "Role: product strategy, UX and UI for a team planning platform.", "url": "/cases/#case-1" },
+  { "type": "project", "title": "Morrow Finance", "description": "Role: UX and UI design for a personal finance app." },
+  { "type": "project", "title": "Mira Health", "description": "Role: research and product design for a health app." },
+  { "type": "project", "title": "Tempo Music", "description": "Role: visual and interaction design for a music platform." },
+  { "type": "project", "title": "Wayfinder", "description": "Role: product design for an urban mobility service." },
+  { "type": "project", "title": "Signal Analytics", "description": "Role: UX and dashboard design for business analytics." },
+  { "type": "project", "title": "Lumen Learning", "description": "Role: visual design for a digital learning platform." },
+  { "type": "project", "title": "Elsewhere", "description": "Role: interaction design for a travel planning app." },
+  { "type": "project", "title": "Kindred Market", "description": "Role: UX and UI for a sustainable marketplace." },
+  { "type": "project", "title": "Folio Studio", "description": "Role: product design for a creator portfolio tool." }
 ]
