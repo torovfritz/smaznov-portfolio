@@ -1,6 +1,6 @@
 # Smaznov portfolio
 
-Локальная основа портфолио по Figma: `Untitled` → `Page 3`. Четыре статические страницы, общий шаблон, навигация и адаптивные стили. Eleventy и Nunjucks используются только для сборки; единственный браузерный JavaScript управляет кнопкой возврата наверх.
+Портфолио по Figma: четыре статические страницы, общий шаблон, навигация и адаптивные стили. Eleventy и Nunjucks собирают сайт; браузерный JavaScript управляет переходами между страницами, загрузкой изображений и кнопкой возврата наверх.
 
 ## Запуск
 
@@ -31,6 +31,7 @@ src/
   _includes/
     layout.njk
     navigation.njk
+    footer.njk
   index.njk
   cases.njk
   resume.njk
@@ -40,6 +41,7 @@ src/
       tokens.css
       styles.css
     js/
+      site.js
       scroll-menu.js
     fonts/
       dm-sans-variable.ttf
@@ -66,10 +68,12 @@ package-lock.json
 | Пункты меню | `src/_data/navigation.json` |
 | Общий каркас, бренд, заголовок и слоган Main | `src/_includes/layout.njk` |
 | Разметка навигации и текущий пункт | `src/_includes/navigation.njk` |
+| Разметка футера для экранов до 1080 px | `src/_includes/footer.njk` |
 | Разметка содержимого страницы, title и description | `src/*.njk` |
 | Цвета, типографика, повторяющиеся размеры | `src/assets/css/tokens.css` |
 | BEM-классы, сетка, состояния, адаптивность | `src/assets/css/styles.css` |
 | Появление меню при прокрутке и возврат наверх | `src/assets/js/scroll-menu.js` |
+| Переходы между страницами и загрузка изображений | `src/assets/js/site.js` |
 | Изображения | `src/assets/images/` |
 
 Nunjucks перебирает записи JSON через `{% for %}`. `pageKey` в начале страницы определяет активный пункт; `layout` подключает общий шаблон. На Main переход ведёт через бренд `Smaznov.`; в меню три остальных назначения, как в макете.
@@ -78,8 +82,10 @@ Nunjucks перебирает записи JSON через `{% for %}`. `pageKey
 
 Шрифт DM Sans хранится локально, лицензия — `src/assets/fonts/OFL.txt`. Для работы сайта не нужны внешние запросы к шрифтовому сервису.
 
-## Границы этапа
+## Публикация
 
-Репозиторий создан приватным: <https://github.com/torovfritz/smaznov-portfolio>. Коммиты сохранены только локально. Push, деплой и хостинг не выполнялись. `node_modules/`, `_site/`, временные проверки и `.env` исключены из Git.
+Сайт опубликован по адресу <https://smaznov.design/> из репозитория <https://github.com/torovfritz/smaznov-portfolio>. Отправка изменений в `main` запускает [GitHub Actions](.github/workflows/pages.yml): workflow выполняет `npm ci`, затем `npm run build` и публикует `_site/` на GitHub Pages.
+
+Сайт размещён в корне домена. Не добавляйте `--pathprefix=/smaznov-portfolio/` в команду сборки: такой префикс направит ссылки на разделы, стили и скрипты по неверному пути. `node_modules/`, `_site/`, временные проверки и `.env` исключены из Git.
 
 Проверки, источники Figma, placeholders, отличия и вопросы доступности описаны в [design-notes.md](docs/design-notes.md).
