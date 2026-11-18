@@ -1,22 +1,12 @@
 import Swup from 'swup';
 import SwupA11yPlugin from '@swup/a11y-plugin';
 import SwupHeadPlugin from '@swup/head-plugin';
+import { animate } from 'motion/mini';
 import { createScrollMenu } from './scroll-menu.js';
 
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const scrollMenu = createScrollMenu();
-
-async function revealInitialContent() {
-    const root = document.documentElement;
-    await document.fonts.ready;
-    // Paint the hidden content with the final font before starting the same
-    // opacity transition used when Swup reveals a newly loaded page.
-    await new Promise((resolve) => {
-        requestAnimationFrame(() => requestAnimationFrame(resolve));
-    });
-    if (!root.classList.contains('is-first-load')) return;
-    root.classList.add('is-initial-rendering');
-    root.classList.remove('is-first-load');
-}
+const imageWaitLimit = 400;
 
 function waitForImageLoad(image) {
     return new Promise((resolve) => {
@@ -32,7 +22,8 @@ function waitForImageLoad(image) {
 }
 
 function prepareImages(root = document) {
-    if (!root) return;
+    const pending = new Map();
+    if (!root) return pending;
 
     function markReady(image) {
         if (!image.naturalWidth) return;
@@ -55,8 +46,32 @@ function prepareImages(root = document) {
                   })
                 : waitForImageLoad(image);
 
-        ready.then(() => markReady(image));
+        pending.set(
+            image,
+            ready.then(() => {
+                markReady(image);
+            }),
+        );
     });
+
+    return pending;
+}
+
+async function waitForVisibleImages(pending) {
+    const visible = [...pending].filter(([image]) => {
+        const bounds = image.getBoundingClientRect();
+        return bounds.top < window.innerHeight && bounds.bottom > 0;
+    });
+    if (!visible.length) return;
+
+    let timeout;
+    await Promise.race([
+        Promise.all(visible.map(([, ready]) => ready)),
+        new Promise((resolve) => {
+            timeout = window.setTimeout(resolve, imageWaitLimit);
+        }),
+    ]);
+    window.clearTimeout(timeout);
 }
 
 function updatePersistentElements() {
@@ -81,21 +96,58 @@ function updatePersistentElements() {
 
 const swup = new Swup({
     containers: ['#page-intro', '#main-content'],
-    animationSelector: '[data-page-transition]',
+    animationSelector: false,
     plugins: [new SwupA11yPlugin(), new SwupHeadPlugin()],
 });
 
 prepareImages();
-revealInitialContent();
 
-swup.hooks.on('page:view', () => {
-    prepareImages(document.querySelector('#main-content'));
-    updatePersistentElements();
+swup.hooks.replace('animation:out:await', async (visit) => {
+    if (!visit.animation.animate || reducedMotion.matches) return;
+
+    await animate(
+        '[data-page-transition]',
+        {
+            opacity: [1, 0],
+        },
+        { duration: 0.2, ease: 'easeInOut' },
+    );
+
+    if (!visit.done)
+        document.documentElement.classList.add('page-enter-pending');
 });
-swup.hooks.on('visit:start', () => {
-    document.documentElement.classList.remove('is-first-load', 'is-initial-rendering');
-    scrollMenu.suspend();
+
+swup.hooks.replace('animation:in:await', async (visit) => {
+    const pending = prepareImages(document.querySelector('#main-content'));
+    if (!visit.animation.animate || reducedMotion.matches) {
+        document.documentElement.classList.remove('page-enter-pending');
+        return;
+    }
+
+    try {
+        await waitForVisibleImages(pending);
+
+        const animation = animate(
+            '[data-page-transition]',
+            {
+                opacity: [0, 1],
+            },
+            { duration: 0.3, ease: [0.22, 1, 0.36, 1] },
+        );
+
+        document.documentElement.classList.remove('page-enter-pending');
+        await animation;
+        animation.cancel();
+    } finally {
+        document.documentElement.classList.remove('page-enter-pending');
+    }
 });
+
+swup.hooks.on('page:view', updatePersistentElements);
+swup.hooks.on('visit:start', () => scrollMenu.suspend());
 for (const hook of ['visit:abort', 'visit:end', 'visit:fail']) {
-    swup.hooks.on(hook, () => scrollMenu.resume());
+    swup.hooks.on(hook, () => {
+        document.documentElement.classList.remove('page-enter-pending');
+        scrollMenu.resume();
+    });
 }
