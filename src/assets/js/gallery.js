@@ -21,6 +21,12 @@ export function createGallery(root) {
     function update() {
         frame = 0;
         if (!items.length) return;
+        if (mobile.matches) {
+            root.style.removeProperty('--gallery-top-space');
+            root.style.removeProperty('--gallery-bottom-space');
+            root.classList.add('is-ready');
+            return;
+        }
 
         const viewportHeight = window.innerHeight;
         const center = viewportHeight / 2;
@@ -31,7 +37,7 @@ export function createGallery(root) {
         const firstInfoMargin = parseFloat(getComputedStyle(firstInfo).marginTop) || 0;
         const lastInfoMargin = parseFloat(getComputedStyle(lastInfo).marginTop) || 0;
         const galleryTop = root.getBoundingClientRect().top + window.scrollY;
-        const verticalInset = mobile.matches ? 32 : Math.min(144, Math.max(64, viewportHeight * 0.1));
+        const verticalInset = Math.min(144, Math.max(64, viewportHeight * 0.1));
         let maxWidth = 0;
         for (let pass = 0; pass < 3; pass++) {
             const infoHeight = firstInfoInner.offsetHeight;
@@ -42,8 +48,7 @@ export function createGallery(root) {
             root.style.setProperty('--gallery-caption-width', captionWidth);
             if (firstInfoInner.offsetHeight === infoHeight) break;
         }
-        const fixedWidth = root.clientWidth;
-        const cardHeight = (mobile.matches ? fixedWidth : maxWidth) * 920 / 1104;
+        const cardHeight = maxWidth * 920 / 1104;
         const firstHeight = cardHeight + firstInfoMargin + firstInfoInner.offsetHeight;
         const lastHeight = cardHeight + lastInfoMargin + lastInfoInner.offsetHeight;
         const mainBottomPadding = main ? parseFloat(getComputedStyle(main).paddingBottom) || 0 : 0;
@@ -57,8 +62,6 @@ export function createGallery(root) {
         setSpace('--gallery-top-space', topSpace);
         setSpace('--gallery-bottom-space', (viewportHeight - lastHeight) / 2 - mainBottomPadding - footerHeight);
         root.classList.add('is-ready');
-
-        if (mobile.matches) return;
 
         let nearest = null;
         let distance = Infinity;
