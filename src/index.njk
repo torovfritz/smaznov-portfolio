@@ -7,8 +7,8 @@ description: I turn ideas into thoughtful digital experiences.
 <section class="home-gallery" aria-label="Selected work" data-gallery>
   {% for item in gallery %}
     <article class="home-gallery__item" data-gallery-item>
-      <div class="home-gallery__media" aria-label="Project {{ item.number }} preview">
-        <span class="home-gallery__number" aria-hidden="true">{{ item.number }}</span>
+      <div class="home-gallery__media image-placeholder">
+        <img class="home-gallery__image" src="/assets/images/case-placeholder.png" width="1320" height="844" alt=""{% if not loop.first %} loading="lazy"{% endif %}>
       </div>
       <div class="home-gallery__info" data-gallery-info>
         <h2 class="home-gallery__title">{{ item.title }}</h2>
