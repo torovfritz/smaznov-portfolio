@@ -146,12 +146,10 @@ swup.hooks.replace('animation:in:await', async (visit) => {
 });
 
 swup.hooks.on('page:view', updatePersistentElements);
-swup.hooks.on('visit:abort', () =>
-    document.documentElement.classList.remove('page-enter-pending'),
-);
-swup.hooks.on('visit:end', () =>
-    document.documentElement.classList.remove('page-enter-pending'),
-);
-swup.hooks.on('visit:fail', () =>
-    document.documentElement.classList.remove('page-enter-pending'),
-);
+swup.hooks.on('visit:start', () => scrollMenu.suspend());
+for (const hook of ['visit:abort', 'visit:end', 'visit:fail']) {
+    swup.hooks.on(hook, () => {
+        document.documentElement.classList.remove('page-enter-pending');
+        scrollMenu.resume();
+    });
+}

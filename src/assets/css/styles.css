@@ -150,6 +150,11 @@ a:focus-visible,
 .site-footer { display: none; }
 
 .scroll-menu { display: none; }
+.has-js .scroll-menu__portrait .portrait__image {
+  opacity: 1;
+  transform: scale(0.95);
+  animation: none;
+}
 
 @media (max-width: 1080px) {
   .scroll-menu:not([hidden]) {

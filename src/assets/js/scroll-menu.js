@@ -1,6 +1,6 @@
 export function createScrollMenu() {
   const menu = document.querySelector('[data-scroll-menu]');
-  if (!menu) return { refresh() {} };
+  if (!menu) return { refresh() {}, suspend() {}, resume() {} };
 
   const button = menu.querySelector('[data-scroll-menu-button]');
   const label = menu.querySelector('[data-scroll-menu-label]');
@@ -9,6 +9,7 @@ export function createScrollMenu() {
   let expansionTimer;
   let hideTimer;
   let frame;
+  let suspended = false;
 
   function updateWidth() {
     const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
@@ -20,6 +21,7 @@ export function createScrollMenu() {
 
   function update() {
     frame = 0;
+    if (suspended) return;
     const title = document.querySelector('#page-title');
     const visible = title && narrowScreen.matches && title.getBoundingClientRect().bottom <= 0;
 
@@ -72,6 +74,19 @@ export function createScrollMenu() {
   update();
 
   return {
+    suspend() {
+      suspended = true;
+      clearTimeout(expansionTimer);
+      clearTimeout(hideTimer);
+      cancelAnimationFrame(frame);
+      frame = 0;
+      menu.hidden = true;
+      menu.classList.remove('scroll-menu--expanded', 'scroll-menu--visible', 'scroll-menu--leaving');
+    },
+    resume() {
+      suspended = false;
+      scheduleUpdate();
+    },
     refresh(pageLabel) {
       label.textContent = pageLabel;
       update();
