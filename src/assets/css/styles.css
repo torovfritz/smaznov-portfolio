@@ -173,7 +173,7 @@ a:focus-visible,
 @media (min-width: 1081px) {
   /* Match the gallery's viewport-based first card before its script loads. */
   .home-gallery:not(.is-ready) {
-    --gallery-initial-width: min(100%, calc(120svh - clamp(154px, 24svh, 346px) - 108px));
+    --gallery-initial-width: min(100%, max(400px, calc(120svh - clamp(154px, 24svh, 346px) - 108px)));
   }
   .home-gallery:not(.is-ready) .home-gallery__item:first-child { min-height: 100svh; align-content: center; }
   .home-gallery:not(.is-ready) .home-gallery__item:first-child .home-gallery__media,

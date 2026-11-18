@@ -7,6 +7,7 @@ export function createGallery(root) {
     const items = [...root.querySelectorAll('[data-gallery-item]')];
     const main = root.closest('.site-layout__content');
     const footer = document.querySelector('.site-footer');
+    const minCardWidth = 400;
     let frame = 0;
 
     function setSpace(name, value) {
@@ -36,7 +37,7 @@ export function createGallery(root) {
         for (let pass = 0; pass < 3; pass++) {
             const infoHeight = firstInfoInner.offsetHeight;
             const availableHeight = Math.max(160, viewportHeight - infoHeight - firstInfoMargin - verticalInset * 2);
-            maxWidth = Math.min(root.clientWidth, availableHeight * 1104 / 920);
+            maxWidth = Math.min(root.clientWidth, Math.max(minCardWidth, availableHeight * 1104 / 920));
             const captionWidth = `${Math.round(maxWidth)}px`;
             if (root.style.getPropertyValue('--gallery-caption-width') === captionWidth) break;
             root.style.setProperty('--gallery-caption-width', captionWidth);
@@ -86,7 +87,10 @@ export function createGallery(root) {
             }
             if (reducedMotion.matches) progress = active ? 1 : 0;
 
-            const cardWidth = Math.round(maxWidth * (0.738 + 0.262 * progress));
+            const cardWidth = Math.max(
+                Math.min(minCardWidth, root.clientWidth),
+                Math.round(maxWidth * (0.738 + 0.262 * progress))
+            );
             const cardScale = maxWidth ? cardWidth / maxWidth : 1;
             // Scale the full-size caption layout with the card to preserve text line breaks.
             setItemValue(item, '--gallery-card-width', `${cardWidth}px`);
