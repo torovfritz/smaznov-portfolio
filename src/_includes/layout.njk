@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-initial-page="{{ pageKey }}">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="{{ description }}">
     <title>{{ title }} — Smaznov.</title>
     <script>
-      document.documentElement.classList.add('has-js');
+      document.documentElement.classList.add('has-js', 'is-first-load');
       document.addEventListener('load', (event) => {
         const image = event.target;
         if (!(image instanceof HTMLImageElement)) return;

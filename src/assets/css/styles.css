@@ -39,7 +39,23 @@ img { display: block; }
   from { opacity: 0; transform: scale(0.65); }
   to { opacity: 1; transform: scale(0.95); }
 }
-.page-enter-pending [data-page-transition] { opacity: 0; }
+/* AREA 17 page transitions: 350ms fade-out (ease-out), fade-in (ease). */
+html.is-first-load [data-page-transition] {
+  opacity: 0;
+}
+html.is-initial-rendering[data-initial-page="main"] {
+  --page-enter-duration: 0.7s;
+}
+html.is-initial-rendering [data-page-transition],
+html.is-rendering [data-page-transition] {
+  opacity: 1;
+  transition: opacity var(--page-enter-duration, 0.35s) ease;
+}
+html.is-animating [data-page-transition],
+html.is-leaving [data-page-transition] {
+  opacity: 0;
+  transition: opacity 0.35s ease-out;
+}
 
 .image-placeholder { background-color: var(--color-whitesmoke); transition: background-color 0.25s ease; }
 .image-placeholder--ready { background-color: transparent; }
@@ -358,6 +374,11 @@ a:focus-visible,
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html.is-first-load [data-page-transition] { opacity: 1; }
+  html.is-initial-rendering [data-page-transition],
+  html.is-rendering [data-page-transition],
+  html.is-animating [data-page-transition],
+  html.is-leaving [data-page-transition] { transition: none; }
   .has-js .portrait__image.image-reveal--ready { animation: none; }
   .has-js #main-content img,
   .image-placeholder { transition: none; }
