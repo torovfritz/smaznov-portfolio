@@ -86,9 +86,10 @@ function updatePersistentElements() {
         else link.removeAttribute('aria-current');
     });
 
-    const brand = document.querySelector('.site-brand');
-    if (pageKey === 'main') brand.setAttribute('aria-current', 'page');
-    else brand.removeAttribute('aria-current');
+    document.querySelectorAll('.site-brand').forEach((brand) => {
+        if (pageKey === 'main') brand.setAttribute('aria-current', 'page');
+        else brand.removeAttribute('aria-current');
+    });
 
     scrollMenu.refresh(page.dataset.pageLabel);
 }
