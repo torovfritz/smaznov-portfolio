@@ -1,0 +1,12 @@
+[
+  { "type": "case", "number": 1, "title": "Case name", "date": "Date", "description": "Description", "url": "/cases/#case-1" },
+  { "type": "project", "number": 2, "title": "Project name", "date": "Date" },
+  { "type": "project", "number": 3, "title": "Project name", "date": "Date" },
+  { "type": "project", "number": 4, "title": "Project name", "date": "Date" },
+  { "type": "project", "number": 5, "title": "Project name", "date": "Date" },
+  { "type": "project", "number": 6, "title": "Project name", "date": "Date" },
+  { "type": "project", "number": 7, "title": "Project name", "date": "Date" },
+  { "type": "project", "number": 8, "title": "Project name", "date": "Date" },
+  { "type": "project", "number": 9, "title": "Project name", "date": "Date" },
+  { "type": "project", "number": 10, "title": "Project name", "date": "Date" }
+]

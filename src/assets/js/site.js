@@ -3,9 +3,11 @@ import SwupA11yPlugin from '@swup/a11y-plugin';
 import SwupHeadPlugin from '@swup/head-plugin';
 import { animate } from 'motion/mini';
 import { createScrollMenu } from './scroll-menu.js';
+import { createGallery } from './gallery.js';
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const scrollMenu = createScrollMenu();
+let destroyGallery = createGallery(document.querySelector('[data-gallery]'));
 const imageWaitLimit = 400;
 
 function waitForImageLoad(image) {
@@ -143,7 +145,11 @@ swup.hooks.replace('animation:in:await', async (visit) => {
     }
 });
 
-swup.hooks.on('page:view', updatePersistentElements);
+swup.hooks.on('page:view', () => {
+    destroyGallery();
+    destroyGallery = createGallery(document.querySelector('[data-gallery]'));
+    updatePersistentElements();
+});
 swup.hooks.on('visit:start', () => scrollMenu.suspend());
 for (const hook of ['visit:abort', 'visit:end', 'visit:fail']) {
     swup.hooks.on(hook, () => {

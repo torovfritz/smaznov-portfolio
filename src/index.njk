@@ -4,4 +4,18 @@ title: Main
 pageKey: main
 description: I turn ideas into thoughtful digital experiences.
 ---
-{# Main intentionally has an empty content area in the supplied Figma frames. #}
+<section class="home-gallery" aria-label="Selected work" data-gallery>
+  {% for item in gallery %}
+    <article class="home-gallery__item" data-gallery-item>
+      <div class="home-gallery__media" aria-label="Project {{ item.number }} preview">
+        <span class="home-gallery__number" aria-hidden="true">{{ item.number }}</span>
+      </div>
+      <div class="home-gallery__info" data-gallery-info>
+        <h2 class="home-gallery__title">{{ item.title }}</h2>
+        <p class="home-gallery__date">{{ item.date }}</p>
+        {% if item.description %}<p class="home-gallery__description">{{ item.description }}</p>{% endif %}
+        {% if item.type == 'case' %}<a class="home-gallery__link" href="{{ item.url }}">Case Study</a>{% endif %}
+      </div>
+    </article>
+  {% endfor %}
+</section>
