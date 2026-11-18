@@ -109,7 +109,6 @@ swup.hooks.replace('animation:out:await', async (visit) => {
         '[data-page-transition]',
         {
             opacity: [1, 0],
-            transform: ['none', 'translateY(-4px)'],
         },
         { duration: 0.2, ease: 'easeInOut' },
     );
@@ -132,7 +131,6 @@ swup.hooks.replace('animation:in:await', async (visit) => {
             '[data-page-transition]',
             {
                 opacity: [0, 1],
-                transform: ['translateY(4px)', 'none'],
             },
             { duration: 0.3, ease: [0.22, 1, 0.36, 1] },
         );
