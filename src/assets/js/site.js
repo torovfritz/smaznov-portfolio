@@ -9,6 +9,19 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const scrollMenu = createScrollMenu();
 let destroyGallery = createGallery(document.querySelector('[data-gallery]'));
 const imageWaitLimit = 400;
+const portrait = document.querySelector('.site-header .site-brand__portrait');
+const portraitImage = portrait?.querySelector('.portrait__image');
+const originalPortraitSrc = portraitImage?.getAttribute('src');
+const portraitLooks = [
+    originalPortraitSrc,
+    '/assets/images/portrait-look-left.png',
+    originalPortraitSrc,
+    '/assets/images/portrait-look-right.png',
+];
+let brandClickCount = 0;
+let lastBrandClick = 0;
+let portraitSequence = 0;
+let portraitPlaying = false;
 
 function waitForImageLoad(image) {
     return new Promise((resolve) => {
@@ -21,6 +34,42 @@ function waitForImageLoad(image) {
         image.addEventListener('error', settle);
         if (image.complete) settle();
     });
+}
+
+const portraitFramesReady = Promise.all([...new Set(portraitLooks)].filter(Boolean).map(async (src) => {
+    const image = new Image();
+    image.src = src;
+    if (typeof image.decode === 'function') await image.decode();
+    else await waitForImageLoad(image);
+    if (!image.naturalWidth) throw new Error(`Could not load ${src}`);
+})).then(() => true, () => false);
+
+function resetPortraitSequence() {
+    portraitSequence += 1;
+    portraitPlaying = false;
+    brandClickCount = 0;
+    if (portraitImage && originalPortraitSrc) portraitImage.src = originalPortraitSrc;
+}
+
+async function playPortraitSequence() {
+    if (!portraitImage || !originalPortraitSrc || portraitPlaying) return;
+    portraitPlaying = true;
+    const sequence = ++portraitSequence;
+
+    try {
+        if (!(await portraitFramesReady) || sequence !== portraitSequence) return;
+        const frames = reducedMotion.matches ? [portraitLooks[1]] : portraitLooks;
+        for (const src of frames) {
+            if (sequence !== portraitSequence) return;
+            portraitImage.src = src;
+            await new Promise((resolve) => setTimeout(resolve, 500));
+        }
+    } finally {
+        if (sequence === portraitSequence) {
+            portraitImage.src = originalPortraitSrc;
+            portraitPlaying = false;
+        }
+    }
 }
 
 function prepareImages(root = document) {
@@ -84,8 +133,15 @@ function updatePersistentElements() {
     document.querySelectorAll('[data-nav-key]').forEach((link) => {
         const current = link.dataset.navKey === pageKey;
         link.classList.toggle('site-nav__link--current', current);
-        if (current) link.setAttribute('aria-current', 'page');
-        else link.removeAttribute('aria-current');
+        if (current) {
+            link.setAttribute('aria-current', 'page');
+            link.setAttribute('aria-disabled', 'true');
+            link.setAttribute('tabindex', '-1');
+        } else {
+            link.removeAttribute('aria-current');
+            link.removeAttribute('aria-disabled');
+            link.removeAttribute('tabindex');
+        }
     });
 
     document.querySelectorAll('.site-brand').forEach((brand) => {
@@ -101,6 +157,24 @@ const swup = new Swup({
     animationSelector: false,
     plugins: [new SwupA11yPlugin(), new SwupHeadPlugin()],
 });
+
+document.addEventListener('click', (event) => {
+    if (!(event.target instanceof Element)) return;
+    const link = event.target.closest('a[aria-current="page"]');
+    if (!link || (!link.matches('[data-nav-key]') && !link.matches('.site-brand'))) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (!portraitImage || !link.closest('.site-header') || portraitPlaying) return;
+    const now = performance.now();
+    brandClickCount = now - lastBrandClick < 1500 ? brandClickCount + 1 : 1;
+    lastBrandClick = now;
+    if (brandClickCount < 3) return;
+
+    brandClickCount = 0;
+    void playPortraitSequence();
+}, true);
 
 prepareImages();
 
@@ -150,7 +224,10 @@ swup.hooks.on('page:view', () => {
     destroyGallery = createGallery(document.querySelector('[data-gallery]'));
     updatePersistentElements();
 });
-swup.hooks.on('visit:start', () => scrollMenu.suspend());
+swup.hooks.on('visit:start', () => {
+    resetPortraitSequence();
+    scrollMenu.suspend();
+});
 for (const hook of ['visit:abort', 'visit:end', 'visit:fail']) {
     swup.hooks.on(hook, () => {
         document.documentElement.classList.remove('page-enter-pending');

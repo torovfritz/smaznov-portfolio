@@ -143,6 +143,9 @@ a:focus-visible,
 .site-nav__link--current { color: var(--color-current-link); }
 .site-nav__link:hover { text-decoration: underline; text-underline-offset: 0.2em; }
 .site-nav__link:active { color: var(--color-text); }
+.site-nav__link--current,
+.site-nav__link--current:hover,
+.site-nav__link--current:active { color: var(--color-current-link); text-decoration: none; cursor: default; pointer-events: none; }
 
 .site-layout__content { min-width: 0; padding: 11.3125rem var(--space-80) var(--space-80) 0; }
 .site-layout__content-inner { max-width: var(--content-width); }

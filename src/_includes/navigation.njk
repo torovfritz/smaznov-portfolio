@@ -2,7 +2,7 @@
   <ul class="site-nav__list" role="list">
     {% for item in navigation %}
       <li class="site-nav__item">
-        <a class="site-nav__link{% if pageKey == item.key %} site-nav__link--current{% endif %}" href="{{ item.url }}" data-nav-key="{{ item.key }}"{% if pageKey == item.key %} aria-current="page"{% endif %}>{{ item.label }}</a>
+        <a class="site-nav__link{% if pageKey == item.key %} site-nav__link--current{% endif %}" href="{{ item.url }}" data-nav-key="{{ item.key }}"{% if pageKey == item.key %} aria-current="page" aria-disabled="true" tabindex="-1"{% endif %}>{{ item.label }}</a>
       </li>
     {% endfor %}
   </ul>
