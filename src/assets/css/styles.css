@@ -106,7 +106,7 @@ a:focus-visible,
   padding-left: 0.375rem;
   text-decoration: none;
 }
-.site-brand__portrait { width: 4.4375rem; height: 4.4375rem; }
+.site-brand__portrait { width: 70px; height: 70px; }
 .site-brand__name {
   font-size: var(--heading-size);
   font-weight: var(--font-bold);

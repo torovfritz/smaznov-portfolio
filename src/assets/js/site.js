@@ -12,16 +12,9 @@ const imageWaitLimit = 400;
 const portrait = document.querySelector('.site-header .site-brand__portrait');
 const portraitImage = portrait?.querySelector('.portrait__image');
 const originalPortraitSrc = portraitImage?.getAttribute('src');
-const portraitLooks = [
-    originalPortraitSrc,
-    '/assets/images/portrait-look-left.png',
-    originalPortraitSrc,
-    '/assets/images/portrait-look-right.png',
-];
-let brandClickCount = 0;
-let lastBrandClick = 0;
+const smilePortraitSrc = '/assets/images/portrait-smile.png';
 let portraitSequence = 0;
-let portraitPlaying = false;
+let portraitTimer;
 
 function waitForImageLoad(image) {
     return new Promise((resolve) => {
@@ -36,40 +29,29 @@ function waitForImageLoad(image) {
     });
 }
 
-const portraitFramesReady = Promise.all([...new Set(portraitLooks)].filter(Boolean).map(async (src) => {
-    const image = new Image();
-    image.src = src;
-    if (typeof image.decode === 'function') await image.decode();
-    else await waitForImageLoad(image);
-    if (!image.naturalWidth) throw new Error(`Could not load ${src}`);
-})).then(() => true, () => false);
+const smileImage = new Image();
+smileImage.src = smilePortraitSrc;
+const smileReady = (
+    typeof smileImage.decode === 'function'
+        ? smileImage.decode()
+        : waitForImageLoad(smileImage)
+).then(() => smileImage.naturalWidth > 0, () => false);
 
 function resetPortraitSequence() {
     portraitSequence += 1;
-    portraitPlaying = false;
-    brandClickCount = 0;
+    clearTimeout(portraitTimer);
     if (portraitImage && originalPortraitSrc) portraitImage.src = originalPortraitSrc;
 }
 
-async function playPortraitSequence() {
-    if (!portraitImage || !originalPortraitSrc || portraitPlaying) return;
-    portraitPlaying = true;
+async function showSmile() {
+    if (!portraitImage || !originalPortraitSrc) return;
     const sequence = ++portraitSequence;
-
-    try {
-        if (!(await portraitFramesReady) || sequence !== portraitSequence) return;
-        const frames = reducedMotion.matches ? [portraitLooks[1]] : portraitLooks;
-        for (const src of frames) {
-            if (sequence !== portraitSequence) return;
-            portraitImage.src = src;
-            await new Promise((resolve) => setTimeout(resolve, 500));
-        }
-    } finally {
-        if (sequence === portraitSequence) {
-            portraitImage.src = originalPortraitSrc;
-            portraitPlaying = false;
-        }
-    }
+    clearTimeout(portraitTimer);
+    if (!(await smileReady) || sequence !== portraitSequence) return;
+    portraitImage.src = smilePortraitSrc;
+    portraitTimer = setTimeout(() => {
+        if (sequence === portraitSequence) portraitImage.src = originalPortraitSrc;
+    }, 2000);
 }
 
 function prepareImages(root = document) {
@@ -166,14 +148,8 @@ document.addEventListener('click', (event) => {
     event.preventDefault();
     event.stopPropagation();
 
-    if (!portraitImage || !link.closest('.site-header') || portraitPlaying) return;
-    const now = performance.now();
-    brandClickCount = now - lastBrandClick < 1500 ? brandClickCount + 1 : 1;
-    lastBrandClick = now;
-    if (brandClickCount < 3) return;
-
-    brandClickCount = 0;
-    void playPortraitSequence();
+    if (!portraitImage || !link.closest('.site-header')) return;
+    void showSmile();
 }, true);
 
 prepareImages();
